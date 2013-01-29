@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Berichten{% endblock %}
+
+{% block content %}
+  <h1>Inloggen</h1>
+  <form method="POST" action="{{ url_for('login') }}">
+    {{ form.csrf_token }}
+    <div class="formrow">
+      {{ form.emailaddress.label }} {{ form.emailaddress(size=20) }}
+    </div>
+    <div class="formrow">
+      {{ form.password.label }} {{ form.password(size=20) }}
+    </div>
+    <input type="submit" value="Inloggen" />
+  </form>
+{% endblock %}

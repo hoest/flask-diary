@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Index{% endblock %}
+
+{% block content %}
+  <h1>Dagboeken</h1>
+  <form method="POST" action="{{ url_for('diary_create') }}">
+    {{ form.csrf_token }}
+    {{ form.title.label }} {{ form.title(size=20) }}
+    <input type="submit" value="Opslaan" />
+  </form>
+
+  {% for diary in diaries %}
+    <p><a href="{{ url_for('post_index', diary_id=diary.id) }}">{{ diary.title }}</a> : {{ diary.user_id }}</p>
+  {% endfor %}
+{% endblock %}
