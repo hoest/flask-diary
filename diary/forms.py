@@ -1,5 +1,5 @@
-from flask.ext.wtf import Form, TextField, TextAreaField, DateField, PasswordField, Required
-from flask.ext.wtf.html5 import EmailField
+from flask.ext.wtf import Form, TextField, TextAreaField, PasswordField, Required
+from flask.ext.wtf.html5 import EmailField, DateField
 
 
 class DiaryForm(Form):
