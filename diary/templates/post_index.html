@@ -4,21 +4,7 @@
 
 {% block content %}
   <h1>Berichten</h1>
-  <form method="POST" action="{{ url_for('post_create', diary_id=diary.id) }}">
-    {{ form.csrf_token }}
-    <div class="formrow">
-      {{ form.title.label }} {{ form.title(size=20) }}
-    </div>
-    <div class="formrow">
-      {{ form.body.label }} {{ form.body(size=20) }}
-    </div>
-    <div class="formrow">
-      {{ form.date.label }} {{ form.date(size=20) }}
-    </div>
-    <input type="submit" value="Opslaan" />
-  </form>
-
   {% for post in posts %}
-    <p>{{ post.id }} : {{ post.title }} : {{ post.user_id }} : {{ post.date }} : {{ post.created }} : {{ post.modified }}</p>
+    <p>{{ post.id }} : {{ post.title }} : {{ post.slug }} : {{ post.date }} : {{ post.created }} : {{ post.modified }}</p>
   {% endfor %}
 {% endblock %}

@@ -1,17 +1,17 @@
-from flask.ext.wtf import Form, TextField, DateField, PasswordField
+from flask.ext.wtf import Form, TextField, TextAreaField, DateField, PasswordField, Required
 from flask.ext.wtf.html5 import EmailField
 
 
 class DiaryForm(Form):
-    title = TextField("Titel")
+    title = TextField("Titel", validators=[Required()])
 
 
 class PostForm(Form):
-    title = TextField("Titel")
-    body = TextField("Tekst")
-    date = DateField("Datum")
+    title = TextField("Titel", validators=[Required()])
+    body = TextAreaField("Tekst", validators=[Required()])
+    date = DateField("Datum", validators=[Required()])
 
 
 class LoginForm(Form):
-    emailaddress = EmailField("Emailadres")
-    password = PasswordField("Wachtwoord")
+    emailaddress = EmailField("Emailadres", validators=[Required()])
+    password = PasswordField("Wachtwoord", validators=[Required()])

@@ -1,6 +1,6 @@
 from datetime import datetime
 from diary import app, models, db, forms, lm
-from flask import render_template, redirect, url_for, flash, request
+from flask import g, session, render_template, redirect, url_for, flash, request
 from flask.ext.login import login_required, logout_user, login_user
 
 
@@ -15,76 +15,92 @@ def teardown_request(exception=None):
   db.session.close()
 
 
+@app.before_request
+def check_user_status():
+  """
+  Check global user_id
+  """
+  g.user = None
+  if "user_id" in session:
+    g.user = models.User.query.get(session["user_id"])
+
+
 @lm.user_loader
 def load_user(user_id):
+  """
+  LoginManager method
+  """
   return models.User.get(user_id)
 
 
 @app.route("/")
-@app.route("/diaries/")
 # @login_required
 def diary_index():
   """
   Shows all available diaries, includes a form to create a new one.
   """
   diaries = models.Diary.query.filter(models.Diary.user_id == USER_ID)
-  form = forms.DiaryForm()
-
-  return render_template("diary_index.html", diaries=diaries, form=form)
+  return render_template("diary_index.html", diaries=diaries)
 
 
-@app.route("/diaries/create/", methods=["POST"])
+@app.route("/create/", methods=["POST", "GET"])
 # @login_required
 def diary_create():
   """
-  POST-method to create a new diary for the current user
+  Create a new diary for the current user
   """
-  diary = models.Diary()
-  diary.user_id = USER_ID
-  diary.title = request.form["title"]
+  form = forms.DiaryForm()
+  if form.validate_on_submit():
+    diary = models.Diary(request.form["title"])
+    diary.user_id = USER_ID
 
-  db.session.add(diary)
-  db.session.commit()
+    db.session.add(diary)
+    db.session.commit()
+    flash("Dagboek toegevoegd")
+    return redirect(url_for("diary_index"))
+  else:
+    flash("Dagboek is niet correct ingevoerd")
 
-  flash("Dagboek toegevoegd")
-
-  return redirect(url_for("diary_index"))
+  return render_template("diary_create.html", form=form)
 
 
-@app.route("/diaries/<int:diary_id>/")
-@app.route("/diaries/<int:diary_id>/posts/")
+@app.route("/<path:diary_slug>/")
 # @login_required
-def post_index(diary_id):
+def post_index(diary_slug):
   """
   Shows all available posts in the current diary, includes a form to add a new
   post to this diary.
   """
-  diary = models.Diary.query.get(diary_id)
-  posts = models.Post.query.filter(models.Post.diary_id == diary_id)
-  form = forms.PostForm()
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
+  posts = models.Post.query.filter(models.Post.diary_id == diary.id)
 
-  return render_template("post_index.html", diary=diary, posts=posts, form=form)
+  return render_template("post_index.html", diary=diary, posts=posts)
 
 
-@app.route("/diaries/<int:diary_id>/posts/create/", methods=["POST"])
+@app.route("/<path:diary_slug>/create/", methods=["GET", "POST"])
 # @login_required
-def post_create(diary_id):
+def post_create(diary_slug):
   """
   POST-method to create a new post
   """
-  post = models.Post()
-  post.user_id = USER_ID
-  post.diary_id = diary_id
-  post.title = request.form["title"]
-  post.body = request.form["body"]
-  post.date = datetime.strptime(request.form["date"], "%Y-%m-%d")
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
+  form = forms.PostForm()
+  if form.validate_on_submit():
+    post = models.Post(request.form["title"])
+    post.user_id = USER_ID
+    post.diary_id = diary.id
+    post.body = request.form["body"]
+    post.date = datetime.strptime(request.form["date"], "%Y-%m-%d")
 
-  db.session.add(post)
-  db.session.commit()
+    db.session.add(post)
+    db.session.commit()
 
-  flash("Bericht toegevoegd")
+    flash("Bericht toegevoegd")
+    return redirect(url_for("post_index", diary_slug=diary.slug))
+  else:
+    flash("Bericht is niet correct ingevoerd")
 
-  return redirect(url_for("post_index", diary_id=diary_id))
+  return render_template("post_create.html", form=form, diary=diary)
 
 
 @app.route("/login/", methods=["GET", "POST"])
@@ -96,6 +112,9 @@ def login():
     login_user(user)
     flash("Ingelogd")
     return redirect(request.args.get("next") or url_for("diary_index"))
+  else:
+    flash("Inloggegevens niet correct ingevoerd")
+
   return render_template("login.html", form=form)
 
 

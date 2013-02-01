@@ -1,4 +1,4 @@
-from diary import db
+from diary import db, utils, bcrypt
 from datetime import datetime
 
 
@@ -18,9 +18,10 @@ class User(db.Model):
   __tablename__ = "user"
 
   id = db.Column(db.Integer, primary_key=True)
-  firstname = db.Column(db.String(256))
+  firstname = db.Column(db.String(256), nullable=False)
   lastname = db.Column(db.String(256), nullable=False, index=True)
   emailaddress = db.Column(db.String(1024), nullable=False, index=True, unique=True)
+  password = db.Column(db.String(1024), nullable=False)
   role = db.Column(db.SmallInteger, default=ROLE_USER)
   active = db.Column(db.Boolean, default=True)
   created = db.Column(db.DateTime, default=datetime.now)
@@ -28,6 +29,15 @@ class User(db.Model):
   # relations
   diaries = db.relationship("Diary", secondary=dairy_user_table, backref="users")
   posts = db.relationship("Post", backref="users")
+
+  def __init__(self, firstname, lastname, emailaddress, password):
+    self.firstname = firstname
+    self.lastname = lastname
+    self.emailaddress = emailaddress
+    self.password = bcrypt.generate_password_hash(password)
+
+  def is_password_correct(self, password):
+    return bcrypt.check_password_hash(self.password, password)
 
   # Flask-Login
   def is_authenticated(self):
@@ -55,10 +65,15 @@ class Diary(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
   title = db.Column(db.String(1024), nullable=False, index=True)
+  slug = db.Column(db.String(256), nullable=False, unique=True)
   created = db.Column(db.DateTime, default=datetime.now)
 
   # relations
   posts = db.relationship("Post", backref="diaries")
+
+  def __init__(self, title):
+    self.title = title
+    self.slug = utils.slugify(title)
 
   def __repr__(self):
     return u"<Diary %s>" % (self.title)
@@ -76,11 +91,16 @@ class Post(db.Model):
   title = db.Column(db.String(1024), nullable=False, index=True)
   body = db.Column(db.Text, nullable=False)
   date = db.Column(db.Date, default=datetime.now)
+  slug = db.Column(db.String(256), nullable=False, unique=True)
   created = db.Column(db.DateTime, default=datetime.now)
   modified = db.Column(db.DateTime, default=datetime.now)
 
   # relations
   pictures = db.relationship("Picture", backref="posts")
+
+  def __init__(self, title):
+    self.title = title
+    self.slug = utils.slugify(title)
 
   def __repr__(self):
     return u"<Post %s>" % (self.title)
@@ -96,6 +116,11 @@ class Picture(db.Model):
   post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
   title = db.Column(db.String(1024), nullable=False, index=True)
   file = db.Column(db.Binary, nullable=False)
+  slug = db.Column(db.String(256), nullable=False, unique=True)
+
+  def __init__(self, title):
+    self.title = title
+    self.slug = utils.slugify(title)
 
   def __repr__(self):
     return u"<Picture %s>" % (self.title)

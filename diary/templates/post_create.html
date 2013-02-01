@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Berichten{% endblock %}
+
+{% block content %}
+  <h1>Berichten</h1>
+  <form method="POST" action="{{ url_for('post_create', diary_slug=diary.slug) }}">
+    {{ form.csrf_token }}
+    <div class="formrow">
+      {{ form.title.label }} {{ form.title(size=20) }}
+    </div>
+    <div class="formrow">
+      {{ form.body.label }} {{ form.body(size=20) }}
+    </div>
+    <div class="formrow">
+      {{ form.date.label }} {{ form.date(size=20) }}
+    </div>
+    <input type="submit" value="Opslaan" />
+  </form>
+{% endblock %}

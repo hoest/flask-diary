@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Index{% endblock %}
+
+{% block content %}
+  <h1>Dagboeken</h1>
+  <form method="POST" action="{{ url_for('diary_create') }}">
+    {{ form.csrf_token }}
+    {{ form.title.label }} {{ form.title(size=20) }}
+    <input type="submit" value="Opslaan" />
+  </form>
+{% endblock %}
