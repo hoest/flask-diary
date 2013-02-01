@@ -1,3 +1,9 @@
 body {
   background-color: #ffffff;
 }
+
+.date {
+  font-style: italic;
+  text-align: right;
+  margin-bottom: .5rem;
+}

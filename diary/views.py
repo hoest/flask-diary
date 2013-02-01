@@ -2,22 +2,8 @@ from datetime import datetime
 from diary import app, models, db, forms, lm
 from flask import g, session, render_template, redirect, url_for, flash, request
 from flask.ext.login import login_required, logout_user, login_user
-from jinja2 import evalcontextfilter, Markup, escape
-import re
 
 USER_ID = 1  # test user-id
-
-
-@app.template_filter()
-@evalcontextfilter
-def nl2br(eval_ctx, value):
-  paragraph_re = re.compile(r"(?:\r\n|\r|\n){2,}")
-
-  result = u"\n\n".join(u"<p>%s</p>" % p.replace("\n", "<br>\n") \
-    for p in paragraph_re.split(escape(value)))
-  if eval_ctx.autoescape:
-    result = Markup(result)
-  return result
 
 
 @app.teardown_request
