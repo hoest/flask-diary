@@ -88,13 +88,33 @@ def post_create(diary_id, diary_slug):
     post = models.Post(request.form["title"])
     post.user_id = USER_ID
     post.diary_id = diary.id
-    post.body = request.form["body"]
-    post.date = datetime.strptime(request.form["date"], "%Y-%m-%d")
-
+    form.populate_obj(post)
     db.session.add(post)
     db.session.commit()
 
     flash("Bericht toegevoegd")
+    return redirect(url_for("post_index", diary_id=diary.id, diary_slug=diary.slug))
+  # else:
+  #   flash("Bericht is niet correct ingevoerd")
+
+  return render_template("post_create.html", form=form, diary=diary)
+
+
+@app.route("/<int:diary_id>/<path:diary_slug>/<int:post_id>/<path:post_slug>/edit/", methods=["GET", "POST"])
+# @login_required
+def post_edit(diary_id, diary_slug, post_id, post_slug):
+  """
+  POST-method to edit post
+  """
+  diary = models.Diary.query.get(diary_id)
+  post = models.Post.query.get(post_id)
+  form = forms.PostForm(obj=post)
+  if form.validate_on_submit():
+    form.populate_obj(post)
+    db.session.add(post)
+    db.session.commit()
+
+    flash("Bericht gewijzigd")
     return redirect(url_for("post_index", diary_id=diary.id, diary_slug=diary.slug))
   # else:
   #   flash("Bericht is niet correct ingevoerd")

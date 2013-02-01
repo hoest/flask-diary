@@ -12,6 +12,9 @@
 {% endblock %}
 
 {% block content %}
+  <p>
+    <a href="{{ url_for('post_edit', diary_id=diary.id, diary_slug=diary.slug, post_id=post.id, post_slug=post.slug) }}">Bericht bewerken...</a>
+  </p>
   <div class="date">{{ post.date.strftime('%e %B %Y') }}</div>
   <div class="text">{{ post.body|markdown }}</div>
 {% endblock %}
