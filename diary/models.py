@@ -65,7 +65,7 @@ class Diary(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
   title = db.Column(db.String(1024), nullable=False, index=True)
-  slug = db.Column(db.String(256), nullable=False, unique=True)
+  slug = db.Column(db.String(256), nullable=False)
   created = db.Column(db.DateTime, default=datetime.now)
 
   # relations
@@ -91,7 +91,7 @@ class Post(db.Model):
   title = db.Column(db.String(1024), nullable=False, index=True)
   body = db.Column(db.Text, nullable=False)
   date = db.Column(db.Date, default=datetime.now)
-  slug = db.Column(db.String(256), nullable=False, unique=True)
+  slug = db.Column(db.String(256), nullable=False)
   created = db.Column(db.DateTime, default=datetime.now)
   modified = db.Column(db.DateTime, default=datetime.now)
 
@@ -116,7 +116,7 @@ class Picture(db.Model):
   post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
   title = db.Column(db.String(1024), nullable=False, index=True)
   file = db.Column(db.Binary, nullable=False)
-  slug = db.Column(db.String(256), nullable=False, unique=True)
+  slug = db.Column(db.String(256), nullable=False)
 
   def __init__(self, title):
     self.title = title

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - {{ diary.title }}{% endblock %}
+
+{% block header %}
+  <a href="{{ url_for('post_view', diary_id=diary.id, diary_slug=diary.slug, post_id=post.id, post_slug=post.slug) }}">{{ post.title }}</a>
+{% endblock %}
+
+{% block breadcrumbs %}
+  <li><a href="{{ url_for('post_index', diary_id=diary.id, diary_slug=diary.slug) }}">{{ diary.title }}</a> <span class="divider">/</span></li>
+  <li class="active">{{ post.title }}</li>
+{% endblock %}
+
+{% block content %}
+  <div class="date">{{ post.date }}</div>
+  <div class="text">{{ post.body|nl2br }}</div>
+{% endblock %}

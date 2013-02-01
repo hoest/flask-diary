@@ -1,10 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}Index{% endblock %}
+{% block title %}Dagboeken{% endblock %}
+
+{% block header %}Dagboeken{% endblock %}
+
+{% block breadcrumbs %}
+  <li class="active">Dagboeken</li>
+{% endblock %}
 
 {% block content %}
-  <h1>Dagboeken</h1>
-  {% for diary in diaries %}
-    <p><a href="{{ url_for('post_index', diary_slug=diary.slug) }}">{{ diary.title }}</a> : {{ diary.user_id }}</p>
-  {% endfor %}
+  <p>
+    <a href="{{ url_for('diary_create') }}">Dagboek toevoegen...</a>
+  </p>
+  {% if diaries %}
+    <ul>
+    {% for diary in diaries %}
+      <li>
+        <a href="{{ url_for('post_index', diary_id=diary.id, diary_slug=diary.slug) }}">{{ diary.title }}</a>
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
 {% endblock %}

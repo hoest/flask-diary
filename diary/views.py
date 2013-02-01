@@ -2,9 +2,22 @@ from datetime import datetime
 from diary import app, models, db, forms, lm
 from flask import g, session, render_template, redirect, url_for, flash, request
 from flask.ext.login import login_required, logout_user, login_user
-
+from jinja2 import evalcontextfilter, Markup, escape
+import re
 
 USER_ID = 1  # test user-id
+
+
+@app.template_filter()
+@evalcontextfilter
+def nl2br(eval_ctx, value):
+  paragraph_re = re.compile(r"(?:\r\n|\r|\n){2,}")
+
+  result = u"\n\n".join(u"<p>%s</p>" % p.replace("\n", "<br>\n") \
+    for p in paragraph_re.split(escape(value)))
+  if eval_ctx.autoescape:
+    result = Markup(result)
+  return result
 
 
 @app.teardown_request
@@ -58,32 +71,32 @@ def diary_create():
     db.session.commit()
     flash("Dagboek toegevoegd")
     return redirect(url_for("diary_index"))
-  else:
-    flash("Dagboek is niet correct ingevoerd")
+  # else:
+  #   flash("Dagboek is niet correct ingevoerd")
 
   return render_template("diary_create.html", form=form)
 
 
-@app.route("/<path:diary_slug>/")
+@app.route("/<int:diary_id>/<path:diary_slug>/")
 # @login_required
-def post_index(diary_slug):
+def post_index(diary_id, diary_slug):
   """
   Shows all available posts in the current diary, includes a form to add a new
   post to this diary.
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
+  diary = models.Diary.query.get(diary_id)
   posts = models.Post.query.filter(models.Post.diary_id == diary.id)
 
   return render_template("post_index.html", diary=diary, posts=posts)
 
 
-@app.route("/<path:diary_slug>/create/", methods=["GET", "POST"])
+@app.route("/<int:diary_id>/<path:diary_slug>/create/", methods=["GET", "POST"])
 # @login_required
-def post_create(diary_slug):
+def post_create(diary_id, diary_slug):
   """
   POST-method to create a new post
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
+  diary = models.Diary.query.get(diary_id)
   form = forms.PostForm()
   if form.validate_on_submit():
     post = models.Post(request.form["title"])
@@ -96,11 +109,24 @@ def post_create(diary_slug):
     db.session.commit()
 
     flash("Bericht toegevoegd")
-    return redirect(url_for("post_index", diary_slug=diary.slug))
-  else:
-    flash("Bericht is niet correct ingevoerd")
+    return redirect(url_for("post_index", diary_id=diary.id, diary_slug=diary.slug))
+  # else:
+  #   flash("Bericht is niet correct ingevoerd")
 
   return render_template("post_create.html", form=form, diary=diary)
+
+
+@app.route("/<int:diary_id>/<path:diary_slug>/<int:post_id>/<path:post_slug>/")
+# @login_required
+def post_view(diary_id, diary_slug, post_id, post_slug):
+  """
+  Shows all available posts in the current diary, includes a form to add a new
+  post to this diary.
+  """
+  diary = models.Diary.query.get(diary_id)
+  post = models.Post.query.get(post_id)
+
+  return render_template("post_view.html", diary=diary, post=post)
 
 
 @app.route("/login/", methods=["GET", "POST"])
@@ -112,8 +138,8 @@ def login():
     login_user(user)
     flash("Ingelogd")
     return redirect(request.args.get("next") or url_for("diary_index"))
-  else:
-    flash("Inloggegevens niet correct ingevoerd")
+  # else:
+  #   flash("Inloggegevens niet correct ingevoerd")
 
   return render_template("login.html", form=form)
 

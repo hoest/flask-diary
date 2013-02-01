@@ -1,12 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Index{% endblock %}
+{% block title %}Dagboek toevoegen{% endblock %}
+
+{% block header %}Dagboek toevoegen{% endblock %}
+
+{% block breadcrumbs %}
+  <li><a href=".">Dagboek toevoegen</a> <span class="divider">/</span></li>
+  <li class="active">Formulier</li>
+{% endblock %}
 
 {% block content %}
-  <h1>Dagboeken</h1>
-  <form method="POST" action="{{ url_for('diary_create') }}">
+  <form class="form-horizontal" method="post" action=".">
     {{ form.csrf_token }}
-    {{ form.title.label }} {{ form.title(size=20) }}
-    <input type="submit" value="Opslaan" />
+    <div class="control-group">
+      {{ form.title.label(class="control-label") }}
+      <div class="controls">
+        {{ form.title(size=20, class="input-xlarge", placeholder=form.title.label.text) }}
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <input type="submit" class="btn" value="Opslaan" />
+      </div>
+    </div>
   </form>
 {% endblock %}

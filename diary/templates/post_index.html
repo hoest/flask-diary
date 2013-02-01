@@ -1,10 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}Berichten{% endblock %}
+{% block title %}Berichten - {{ diary.title }}{% endblock %}
+
+{% block header %}{{ diary.title }}{% endblock %}
+
+{% block breadcrumbs %}
+  <li class="active">{{ diary.title }}</li>
+{% endblock %}
 
 {% block content %}
-  <h1>Berichten</h1>
+  <p>
+    <a href="{{ url_for('post_create', diary_id=diary.id, diary_slug=diary.slug) }}">Bericht toevoegen...</a>
+  </p>
   {% for post in posts %}
-    <p>{{ post.id }} : {{ post.title }} : {{ post.slug }} : {{ post.date }} : {{ post.created }} : {{ post.modified }}</p>
+    <h2>
+      <a href="{{ url_for('post_view', diary_id=diary.id, diary_slug=diary.slug, post_id=post.id, post_slug=post.slug) }}">{{ post.title }}</a>
+    </h2>
+    <div class="date">{{ post.date }}</div>
+    <div class="text">{{ (post.body[:256] + " ...")|nl2br }}</div>
   {% endfor %}
 {% endblock %}

@@ -1,17 +1,32 @@
 {% extends "base.html" %}
 
-{% block title %}Berichten{% endblock %}
+{% block title %}Inloggen{% endblock %}
+
+{% block header %}Inloggen{% endblock %}
+
+{% block breadcrumbs %}
+  <li class="active">Inloggen</li>
+{% endblock %}
 
 {% block content %}
-  <h1>Inloggen</h1>
-  <form method="POST" action="{{ url_for('login') }}">
+  <form class="form-horizontal" method="POST" action=".">
     {{ form.csrf_token }}
-    <div class="formrow">
-      {{ form.emailaddress.label }} {{ form.emailaddress(size=20) }}
+    <div class="control-group">
+      {{ form.emailaddress.label(class="control-label") }}
+      <div class="controls">
+        {{ form.emailaddress(size=20, class="input-xlarge", placeholder=form.emailaddress.label.text) }}
+      </div>
     </div>
-    <div class="formrow">
-      {{ form.password.label }} {{ form.password(size=20) }}
+    <div class="control-group">
+      {{ form.password.label(class="control-label") }}
+      <div class="controls">
+        {{ form.password(size=20, class="input-xlarge", placeholder=form.password.label.text) }}
+      </div>
     </div>
-    <input type="submit" value="Inloggen" />
+    <div class="control-group">
+      <div class="controls">
+        <input type="submit" class="btn" value="Inloggen" />
+      </div>
+    </div>
   </form>
 {% endblock %}
