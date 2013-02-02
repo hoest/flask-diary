@@ -11,4 +11,4 @@ def slugify(text, delim=u"-"):
     word = word.encode("translit/long")
     if word:
         result.append(word)
-  return unicode(delim.join(result))[:200]
+  return unicode(delim.join(result))[:64]
