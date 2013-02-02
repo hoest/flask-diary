@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Bericht toevoegen - {{ diary.title }}{% endblock %}
+{% block title %}Bericht bewerken - {{ diary.title }}{% endblock %}
 
-{% block header %}Bericht toevoegen{% endblock %}
+{% block header %}Bericht bewerken{% endblock %}
 
 {% block breadcrumbs %}
   <li><a href="{{ url_for('post_index', diary_slug=diary.slug) }}">{{ diary.title }}</a> <span class="divider">/</span></li>
-  <li class="active">Toevoegen</li>
+  <li class="active">Bewerken</li>
 {% endblock %}
 
 {% block content %}

@@ -61,7 +61,7 @@ def diary_create():
   # else:
   #   flash("Dagboek is niet correct ingevoerd")
 
-  return render_template("diary_create.html", form=form)
+  return render_template("diary_form.html", form=form)
 
 
 @app.route("/<path:diary_slug>/edit/", methods=["POST", "GET"])
@@ -84,7 +84,7 @@ def diary_edit(diary_slug):
   # else:
   #   flash("Dagboek is niet correct ingevoerd")
 
-  return render_template("diary_create.html", form=form)
+  return render_template("diary_form.html", form=form)
 
 
 @app.route("/delete/<int:diary_id>/")
@@ -136,7 +136,7 @@ def post_create(diary_slug):
   # else:
   #   flash("Bericht is niet correct ingevoerd")
 
-  return render_template("post_create.html", form=form, diary=diary)
+  return render_template("post_form.html", form=form, diary=diary)
 
 
 @app.route("/<path:diary_slug>/<path:post_slug>/edit/", methods=["GET", "POST"])
@@ -161,7 +161,7 @@ def post_edit(diary_slug, post_slug):
   # else:
   #   flash("Bericht is niet correct ingevoerd")
 
-  return render_template("post_create.html", form=form, diary=diary)
+  return render_template("post_form.html", form=form, diary=diary)
 
 
 @app.route("/<path:diary_slug>/<path:post_slug>/")
