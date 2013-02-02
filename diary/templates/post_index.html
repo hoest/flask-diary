@@ -9,9 +9,14 @@
 {% endblock %}
 
 {% block content %}
-  <p>
-    <a href="{{ url_for('post_create', diary_slug=diary.slug) }}">Bericht toevoegen...</a>
-  </p>
+  <ul>
+    <li>
+      <a href="{{ url_for('diary_edit', diary_slug=diary.slug) }}">Dagboek bewerken...</a>
+    </li>
+    <li>
+      <a href="{{ url_for('post_create', diary_slug=diary.slug) }}">Bericht toevoegen...</a>
+    </li>
+  </ul>
   {% for post in posts %}
     <h2>
       <a href="{{ url_for('post_view', diary_slug=diary.slug, post_slug=post.slug) }}">{{ post.title }}</a>

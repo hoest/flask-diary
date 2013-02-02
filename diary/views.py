@@ -64,6 +64,29 @@ def diary_create():
   return render_template("diary_create.html", form=form)
 
 
+@app.route("/<path:diary_slug>/edit/", methods=["POST", "GET"])
+# @login_required
+def diary_edit(diary_slug):
+  """
+  Edit diary for the current user
+  """
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
+  form = forms.DiaryForm(obj=diary)
+
+  if form.validate_on_submit():
+    form.populate_obj(diary)
+    diary.create_slug()
+
+    db.session.add(diary)
+    db.session.commit()
+    flash("Dagboek gewijzigd")
+    return redirect(url_for("diary_index"))
+  # else:
+  #   flash("Dagboek is niet correct ingevoerd")
+
+  return render_template("diary_create.html", form=form)
+
+
 @app.route("/<path:diary_slug>/")
 # @login_required
 def post_index(diary_slug):
