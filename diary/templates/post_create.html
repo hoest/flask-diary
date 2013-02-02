@@ -5,7 +5,7 @@
 {% block header %}Bericht toevoegen{% endblock %}
 
 {% block breadcrumbs %}
-  <li><a href="{{ url_for('post_index', diary_id=diary.id, diary_slug=diary.slug) }}">{{ diary.title }}</a> <span class="divider">/</span></li>
+  <li><a href="{{ url_for('post_index', diary_slug=diary.slug) }}">{{ diary.title }}</a> <span class="divider">/</span></li>
   <li class="active">Toevoegen</li>
 {% endblock %}
 

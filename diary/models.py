@@ -65,7 +65,7 @@ class Diary(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
   title = db.Column(db.String(1024), nullable=False, index=True)
-  slug = db.Column(db.String(256), nullable=False)
+  slug = db.Column(db.String(256), nullable=False, unique=True)
   created = db.Column(db.DateTime, default=datetime.now)
 
   # relations
@@ -73,7 +73,17 @@ class Diary(db.Model):
 
   def __init__(self, title):
     self.title = title
-    self.slug = utils.slugify(title)
+    self.create_slug()
+
+  def create_slug(self):
+    self.slug = utils.slugify(self.title)
+
+    counter = 0
+    new = self.slug
+    while self.query.filter(Diary.slug == new).first() != None:
+      counter += 1
+      new = "{0}-{1}".format(self.slug, counter)
+    self.slug = new
 
   def __repr__(self):
     return u"<Diary %s>" % (self.title)
@@ -98,9 +108,20 @@ class Post(db.Model):
   # relations
   pictures = db.relationship("Picture", backref="posts")
 
-  def __init__(self, title):
+  def __init__(self, diary_id, title):
     self.title = title
-    self.slug = utils.slugify(title)
+    self.create_slug()
+
+  def create_slug(self, diary_id):
+    self.slug = utils.slugify(self.title)
+
+    counter = 0
+    new = self.slug
+    print self.query.filter(Post.slug == new, Post.diary_id == diary_id)
+    while self.query.filter(Post.slug == new, Post.diary_id == diary_id).first() != None:
+      counter += 1
+      new = "{0}-{1}".format(self.slug, counter)
+    self.slug = new
 
   def __repr__(self):
     return u"<Post %s>" % (self.title)

@@ -12,3 +12,4 @@ WTForms==1.0.3
 Werkzeug==0.8.3
 py-bcrypt==0.2
 pysqlite==2.6.3
+translitcodec==0.3

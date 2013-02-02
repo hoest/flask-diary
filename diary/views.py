@@ -49,6 +49,7 @@ def diary_create():
   Create a new diary for the current user
   """
   form = forms.DiaryForm()
+
   if form.validate_on_submit():
     diary = models.Diary(request.form["title"])
     diary.user_id = USER_ID
@@ -63,29 +64,31 @@ def diary_create():
   return render_template("diary_create.html", form=form)
 
 
-@app.route("/<int:diary_id>/<path:diary_slug>/")
+@app.route("/<path:diary_slug>/")
 # @login_required
-def post_index(diary_id, diary_slug):
+def post_index(diary_slug):
   """
   Shows all available posts in the current diary, includes a form to add a new
   post to this diary.
   """
-  diary = models.Diary.query.get(diary_id)
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
   posts = models.Post.query.filter(models.Post.diary_id == diary.id)
 
   return render_template("post_index.html", diary=diary, posts=posts)
 
 
-@app.route("/<int:diary_id>/<path:diary_slug>/create/", methods=["GET", "POST"])
+@app.route("/<path:diary_slug>/create/", methods=["GET", "POST"])
 # @login_required
-def post_create(diary_id, diary_slug):
+def post_create(diary_slug):
   """
   POST-method to create a new post
   """
-  diary = models.Diary.query.get(diary_id)
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
+
   form = forms.PostForm()
+
   if form.validate_on_submit():
-    post = models.Post(request.form["title"])
+    post = models.Post(diary.id, request.form["title"])
     post.user_id = USER_ID
     post.diary_id = diary.id
     form.populate_obj(post)
@@ -100,37 +103,40 @@ def post_create(diary_id, diary_slug):
   return render_template("post_create.html", form=form, diary=diary)
 
 
-@app.route("/<int:diary_id>/<path:diary_slug>/<int:post_id>/<path:post_slug>/edit/", methods=["GET", "POST"])
+@app.route("/<path:diary_slug>/<path:post_slug>/edit/", methods=["GET", "POST"])
 # @login_required
-def post_edit(diary_id, diary_slug, post_id, post_slug):
+def post_edit(diary_slug, post_slug):
   """
   POST-method to edit post
   """
-  diary = models.Diary.query.get(diary_id)
-  post = models.Post.query.get(post_id)
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
+  post = models.Post.query.filter(models.Post.slug == post_slug, models.Post.diary_id == diary.id).first_or_404()
+
   form = forms.PostForm(obj=post)
+
   if form.validate_on_submit():
     form.populate_obj(post)
+    post.create_slug(diary.id)
     db.session.add(post)
     db.session.commit()
 
     flash("Bericht gewijzigd")
-    return redirect(url_for("post_index", diary_id=diary.id, diary_slug=diary.slug))
+    return redirect(url_for("post_index", diary_slug=diary.slug))
   # else:
   #   flash("Bericht is niet correct ingevoerd")
 
   return render_template("post_create.html", form=form, diary=diary)
 
 
-@app.route("/<int:diary_id>/<path:diary_slug>/<int:post_id>/<path:post_slug>/")
+@app.route("/<path:diary_slug>/<path:post_slug>/")
 # @login_required
-def post_view(diary_id, diary_slug, post_id, post_slug):
+def post_view(diary_slug, post_slug):
   """
   Shows all available posts in the current diary, includes a form to add a new
   post to this diary.
   """
-  diary = models.Diary.query.get(diary_id)
-  post = models.Post.query.get(post_id)
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
+  post = models.Post.query.filter(models.Post.slug == post_slug, models.Post.diary_id == diary.id).first_or_404()
 
   return render_template("post_view.html", diary=diary, post=post)
 

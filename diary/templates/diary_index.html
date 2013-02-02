@@ -16,7 +16,7 @@
     <ul>
     {% for diary in diaries %}
       <li>
-        <a href="{{ url_for('post_index', diary_id=diary.id, diary_slug=diary.slug) }}">{{ diary.title }}</a>
+        <a href="{{ url_for('post_index', diary_slug=diary.slug) }}">{{ diary.title }}</a>
       </li>
     {% endfor %}
     </ul>
