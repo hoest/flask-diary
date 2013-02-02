@@ -91,12 +91,14 @@ def post_create(diary_slug):
     post = models.Post(diary.id, request.form["title"])
     post.user_id = USER_ID
     post.diary_id = diary.id
+
     form.populate_obj(post)
+
     db.session.add(post)
     db.session.commit()
 
     flash("Bericht toegevoegd")
-    return redirect(url_for("post_index", diary_id=diary.id, diary_slug=diary.slug))
+    return redirect(url_for("post_index", diary_slug=diary.slug))
   # else:
   #   flash("Bericht is niet correct ingevoerd")
 

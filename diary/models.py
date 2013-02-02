@@ -110,7 +110,7 @@ class Post(db.Model):
 
   def __init__(self, diary_id, title):
     self.title = title
-    self.create_slug()
+    self.create_slug(diary_id)
 
   def create_slug(self, diary_id):
     self.slug = utils.slugify(self.title)
