@@ -87,6 +87,17 @@ def diary_edit(diary_slug):
   return render_template("diary_create.html", form=form)
 
 
+@app.route("/delete/<int:diary_id>/")
+# @login_required
+def diary_delete(diary_id):
+  diary = models.Diary.query.get(diary_id)
+  db.session.delete(diary)
+  db.session.commit()
+
+  flash("Dagboek verwijderd")
+  return redirect(url_for("diary_index"))
+
+
 @app.route("/<path:diary_slug>/")
 # @login_required
 def post_index(diary_slug):
@@ -164,6 +175,17 @@ def post_view(diary_slug, post_slug):
   post = models.Post.query.filter(models.Post.slug == post_slug, models.Post.diary_id == diary.id).first_or_404()
 
   return render_template("post_view.html", diary=diary, post=post)
+
+
+@app.route("/<path:diary_slug>/delete/<int:post_id>/")
+# @login_required
+def post_delete(diary_slug, post_id):
+  post = models.Post.query.get(post_id)
+  db.session.delete(post)
+  db.session.commit()
+
+  flash("Bericht verwijderd")
+  return redirect(url_for("post_index", diary_slug=diary_slug))
 
 
 @app.route("/login/", methods=["GET", "POST"])
