@@ -67,7 +67,7 @@ def diary_edit(diary_slug):
   """
   Edit diary for the current user
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug, models.Diary.user_id == g.user.id).first_or_404()
   form = forms.DiaryForm(obj=diary)
 
   if form.validate_on_submit():
@@ -87,11 +87,16 @@ def diary_edit(diary_slug):
 @app.route("/delete/<int:diary_id>/")
 @login_required
 def diary_delete(diary_id):
+  """
+  Delete a diary
+  """
   diary = models.Diary.query.get(diary_id)
-  db.session.delete(diary)
-  db.session.commit()
-
-  flash("Dagboek verwijderd")
+  if diary.user_id == g.user.id:
+    db.session.delete(diary)
+    db.session.commit()
+    flash("Dagboek verwijderd")
+  else:
+    flash("U heeft hier geen rechten toe.")
   return redirect(url_for("diary_index"))
 
 
@@ -102,7 +107,8 @@ def post_index(diary_slug):
   Shows all available posts in the current diary, includes a form to add a new
   post to this diary.
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
+                                    models.Diary.user_id == g.user.id).first_or_404()
   posts = models.Post.query.filter(models.Post.diary_id == diary.id)
 
   return render_template("post_index.html", diary=diary, posts=posts)
@@ -114,7 +120,8 @@ def post_create(diary_slug):
   """
   POST-method to create a new post
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
+                                    models.Diary.user_id == g.user.id).first_or_404()
 
   form = forms.PostForm()
 
@@ -142,8 +149,10 @@ def post_edit(diary_slug, post_slug):
   """
   POST-method to edit post
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
-  post = models.Post.query.filter(models.Post.slug == post_slug, models.Post.diary_id == diary.id).first_or_404()
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
+                                    models.Diary.user_id == g.user.id).first_or_404()
+  post = models.Post.query.filter(models.Post.slug == post_slug,
+                                  models.Post.diary_id == diary.id).first_or_404()
 
   form = forms.PostForm(obj=post)
 
@@ -168,8 +177,10 @@ def post_view(diary_slug, post_slug):
   Shows all available posts in the current diary, includes a form to add a new
   post to this diary.
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug).first_or_404()
-  post = models.Post.query.filter(models.Post.slug == post_slug, models.Post.diary_id == diary.id).first_or_404()
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
+                                    models.Diary.user_id == g.user.id).first_or_404()
+  post = models.Post.query.filter(models.Post.slug == post_slug,
+                                  models.Post.diary_id == diary.id).first_or_404()
 
   return render_template("post_view.html", diary=diary, post=post)
 
@@ -178,10 +189,13 @@ def post_view(diary_slug, post_slug):
 @login_required
 def post_delete(diary_slug, post_id):
   post = models.Post.query.get(post_id)
-  db.session.delete(post)
-  db.session.commit()
 
-  flash("Bericht verwijderd")
+  if post.user_id == g.user.id:
+    db.session.delete(post)
+    db.session.commit()
+    flash("Bericht verwijderd")
+  else:
+    flash("U heeft hier geen rechten toe.")
   return redirect(url_for("post_index", diary_slug=diary_slug))
 
 
