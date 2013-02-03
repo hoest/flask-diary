@@ -29,11 +29,11 @@ def load_user(user_id):
   """
   LoginManager method
   """
-  return models.User.get(user_id)
+  return models.User.query.get(user_id)
 
 
 @app.route("/")
-# @login_required
+@login_required
 def diary_index():
   """
   Shows all available diaries, includes a form to create a new one.
@@ -43,7 +43,7 @@ def diary_index():
 
 
 @app.route("/create/", methods=["POST", "GET"])
-# @login_required
+@login_required
 def diary_create():
   """
   Create a new diary for the current user
@@ -65,7 +65,7 @@ def diary_create():
 
 
 @app.route("/<path:diary_slug>/edit/", methods=["POST", "GET"])
-# @login_required
+@login_required
 def diary_edit(diary_slug):
   """
   Edit diary for the current user
@@ -88,7 +88,7 @@ def diary_edit(diary_slug):
 
 
 @app.route("/delete/<int:diary_id>/")
-# @login_required
+@login_required
 def diary_delete(diary_id):
   diary = models.Diary.query.get(diary_id)
   db.session.delete(diary)
@@ -99,7 +99,7 @@ def diary_delete(diary_id):
 
 
 @app.route("/<path:diary_slug>/")
-# @login_required
+@login_required
 def post_index(diary_slug):
   """
   Shows all available posts in the current diary, includes a form to add a new
@@ -112,7 +112,7 @@ def post_index(diary_slug):
 
 
 @app.route("/<path:diary_slug>/create/", methods=["GET", "POST"])
-# @login_required
+@login_required
 def post_create(diary_slug):
   """
   POST-method to create a new post
@@ -140,7 +140,7 @@ def post_create(diary_slug):
 
 
 @app.route("/<path:diary_slug>/<path:post_slug>/edit/", methods=["GET", "POST"])
-# @login_required
+@login_required
 def post_edit(diary_slug, post_slug):
   """
   POST-method to edit post
@@ -165,7 +165,7 @@ def post_edit(diary_slug, post_slug):
 
 
 @app.route("/<path:diary_slug>/<path:post_slug>/")
-# @login_required
+@login_required
 def post_view(diary_slug, post_slug):
   """
   Shows all available posts in the current diary, includes a form to add a new
@@ -178,7 +178,7 @@ def post_view(diary_slug, post_slug):
 
 
 @app.route("/<path:diary_slug>/delete/<int:post_id>/")
-# @login_required
+@login_required
 def post_delete(diary_slug, post_id):
   post = models.Post.query.get(post_id)
   db.session.delete(post)
@@ -193,12 +193,13 @@ def login():
   form = forms.LoginForm()
   if form.validate_on_submit():
     # login and validate the user...
-    user = models.User.query.filter(models.User.emailaddress == request.form["emailaddress"])
-    login_user(user)
-    flash("Ingelogd")
-    return redirect(request.args.get("next") or url_for("diary_index"))
-  # else:
-  #   flash("Inloggegevens niet correct ingevoerd")
+    user = models.User.query.filter(models.User.emailaddress == request.form["emailaddress"]).first()
+    if user.is_password_correct(request.form["password"]):
+      login_user(user)
+      flash("U bent ingelogd")
+      return redirect(request.args.get("next") or url_for("diary_index"))
+    else:
+      flash("Inloggegevens niet correct ingevoerd")
 
   return render_template("login.html", form=form)
 

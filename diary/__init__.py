@@ -21,6 +21,8 @@ db = SQLAlchemy(app)
 # Flask-Login
 lm = LoginManager()
 lm.setup_app(app)
+lm.login_view = "login"
+lm.login_message = u"U dient in te loggen voor deze site."
 
 # Flask Bcrypt (passwords)
 bcrypt = Bcrypt(app)

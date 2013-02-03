@@ -1,5 +1,6 @@
 from diary import db, utils, bcrypt
 from datetime import datetime
+from flask.ext.login import UserMixin
 
 
 ROLE_USER = 0
@@ -11,7 +12,7 @@ dairy_user_table = db.Table("dairy_user", db.Model.metadata,
 )
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
   """
   The User object
   """
@@ -38,19 +39,6 @@ class User(db.Model):
 
   def is_password_correct(self, password):
     return bcrypt.check_password_hash(self.password, password)
-
-  # Flask-Login
-  def is_authenticated(self):
-    return True
-
-  def is_active(self):
-    return self.active
-
-  def is_anonymous(self):
-    return False
-
-  def get_id(self):
-    return unicode(self.id)
 
   def __repr__(self):
     return u"<User %s>" % (self.emailaddress)
