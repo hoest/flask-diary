@@ -1,9 +1,6 @@
-from datetime import datetime
 from diary import app, models, db, forms, lm
 from flask import g, session, render_template, redirect, url_for, flash, request
 from flask.ext.login import login_required, logout_user, login_user
-
-USER_ID = 1  # test user-id
 
 
 @app.teardown_request
@@ -38,7 +35,7 @@ def diary_index():
   """
   Shows all available diaries, includes a form to create a new one.
   """
-  diaries = models.Diary.query.filter(models.Diary.user_id == USER_ID)
+  diaries = models.Diary.query.filter(models.Diary.user_id == g.user.id)
   return render_template("diary_index.html", diaries=diaries)
 
 
@@ -52,7 +49,7 @@ def diary_create():
 
   if form.validate_on_submit():
     diary = models.Diary(request.form["title"])
-    diary.user_id = USER_ID
+    diary.user_id = g.user.id
 
     db.session.add(diary)
     db.session.commit()
@@ -123,7 +120,7 @@ def post_create(diary_slug):
 
   if form.validate_on_submit():
     post = models.Post(diary.id, request.form["title"])
-    post.user_id = USER_ID
+    post.user_id = g.user.id
     post.diary_id = diary.id
 
     form.populate_obj(post)
@@ -194,7 +191,7 @@ def login():
   if form.validate_on_submit():
     # login and validate the user...
     user = models.User.query.filter(models.User.emailaddress == request.form["emailaddress"]).first()
-    if user.is_password_correct(request.form["password"]):
+    if user != None and user.is_password_correct(request.form["password"]):
       login_user(user)
       flash("U bent ingelogd")
       return redirect(request.args.get("next") or url_for("diary_index"))
