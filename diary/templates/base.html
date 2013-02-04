@@ -20,6 +20,9 @@
             <h1>
               {% block header %}{% endblock %}
             </h1>
+            {% if g.user != None %}
+              <p>Welkom {{ g.user.firstname }}</p>
+            {% endif %}
           </div>
           <ul class="breadcrumb">
             <li><a href="/">Home</a> <span class="divider">/</span></li>
