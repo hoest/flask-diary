@@ -43,7 +43,13 @@
       <hr />
       <div id="footer">
         {% block footer %}
-        <p class="muted credit">&copy; Copyright 2013 by <a href="http://hoest.nl/">hoest.nl</a> - <a href="{{ url_for('page', path='about') }}">Meer informatie</a></p>
+        <p class="muted credit">
+          &copy; Copyright 2013 by <a href="http://hoest.nl/">hoest.nl</a>
+          - <a href="{{ url_for('page', path='about') }}">Meer informatie</a>
+          {% if g.user != None %}
+            - <a href="{{ url_for('logout') }}">Uitloggen</a>
+          {% endif %}
+        </p>
         {% endblock %}
       </div>
     </div>
