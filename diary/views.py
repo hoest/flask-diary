@@ -29,7 +29,7 @@ def load_user(user_id):
   return models.User.query.get(user_id)
 
 
-@app.route("/<path:path>/")
+@app.route("/pages/<path:path>/")
 def page(path):
     page = pages.get_or_404(path)
     template = page.meta.get("template", "page.html")

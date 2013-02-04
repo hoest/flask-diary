@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page["title"] }}{% endblock %}
+
+{% block header %}{{ page["title"] }}{% endblock %}
+
+{% block breadcrumbs %}
+  <li class="active">{{ page["title"] }}</li>
+{% endblock %}
+
+{% block content %}
+  {{ page.html|safe }}
+{% endblock %}
