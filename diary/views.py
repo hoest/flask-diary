@@ -1,4 +1,4 @@
-from diary import app, models, db, forms, lm
+from diary import app, models, db, forms, lm, pages
 from flask import g, session, render_template, redirect, url_for, flash, request
 from flask.ext.login import login_required, logout_user, login_user
 
@@ -27,6 +27,13 @@ def load_user(user_id):
   LoginManager method
   """
   return models.User.query.get(user_id)
+
+
+@app.route("/<path:path>/")
+def page(path):
+    page = pages.get_or_404(path)
+    template = page.meta.get("template", "page.html")
+    return render_template(template, page=page)
 
 
 @app.route("/")
@@ -67,7 +74,8 @@ def diary_edit(diary_slug):
   """
   Edit diary for the current user
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug, models.Diary.user_id == g.user.id).first_or_404()
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
+                                    models.Diary.user_id == g.user.id).first_or_404()
   form = forms.DiaryForm(obj=diary)
 
   if form.validate_on_submit():
@@ -205,7 +213,7 @@ def login():
   if form.validate_on_submit():
     # login and validate the user...
     user = models.User.query.filter(models.User.emailaddress == request.form["emailaddress"]).first()
-    if user != None and user.is_password_correct(request.form["password"]):
+    if user is not None and user.is_password_correct(request.form["password"]):
       login_user(user)
       flash("U bent ingelogd")
       return redirect(request.args.get("next") or url_for("diary_index"))

@@ -1,10 +1,12 @@
 from diary import defaults
 from flask import Flask
 from flask.ext.login import LoginManager
+from flask_flatpages import FlatPages
 from flask_sqlalchemy import SQLAlchemy
 from flaskext.bcrypt import Bcrypt
 from flaskext.markdown import Markdown
 import locale
+
 
 # create application
 app = Flask(__name__)
@@ -29,5 +31,8 @@ bcrypt = Bcrypt(app)
 
 # Flask Markdown
 markdown = Markdown(app)
+
+# Flask FlatPages
+pages = FlatPages(app)
 
 from diary import views, models
