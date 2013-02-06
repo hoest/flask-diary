@@ -11,16 +11,17 @@
 {% block content %}
   <form class="form-horizontal" method="POST" action=".">
     {{ form.csrf_token }}
+    {{ form.next }}
     <div class="control-group">
       {{ form.emailaddress.label(class="control-label") }}
       <div class="controls">
-        {{ form.emailaddress(size=20, class="input-xlarge", placeholder=form.emailaddress.label.text) }}
+        {{ form.emailaddress(class="input-xlarge", placeholder=form.emailaddress.label.text) }}
       </div>
     </div>
     <div class="control-group">
       {{ form.password.label(class="control-label") }}
       <div class="controls">
-        {{ form.password(size=20, class="input-xlarge", placeholder=form.password.label.text) }}
+        {{ form.password(class="input-xlarge", placeholder=form.password.label.text) }}
       </div>
     </div>
     <div class="control-group">

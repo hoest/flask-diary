@@ -1,6 +1,6 @@
 import os
 
-SECRET_KEY = "AAP!"
+SECRET_KEY = "<SECRET_KEY>"
 DEBUG = True
 BASEDIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
 

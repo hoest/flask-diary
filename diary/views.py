@@ -216,7 +216,7 @@ def login():
     if user is not None and user.is_password_correct(request.form["password"]):
       login_user(user)
       flash("U bent ingelogd")
-      return redirect(request.args.get("next") or url_for("diary_index"))
+      return form.redirect("diary_index")
     else:
       flash("Inloggegevens niet correct ingevoerd")
 
