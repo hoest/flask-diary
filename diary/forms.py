@@ -1,20 +1,30 @@
 from flask import url_for, redirect
-from flask.ext.wtf import HiddenField, Form, TextField, TextAreaField, PasswordField, Required
+from flask.ext.wtf import HiddenField, Form, TextField, TextAreaField, \
+  PasswordField, Required
 from flask.ext.wtf.html5 import EmailField, DateField
 from utils import get_redirect_target, is_safe_url
 
 
 class DiaryForm(Form):
-    title = TextField("Titel", validators=[Required()])
+  """
+  Form for the Diary object
+  """
+  title = TextField("Titel", validators=[Required()])
 
 
 class PostForm(Form):
-    title = TextField("Titel", validators=[Required()])
-    body = TextAreaField("Tekst", validators=[Required()])
-    date = DateField("Datum", validators=[Required()])
+  """
+  Form for the Post object
+  """
+  title = TextField("Titel", validators=[Required()])
+  body = TextAreaField("Tekst", validators=[Required()])
+  date = DateField("Datum", validators=[Required()])
 
 
 class RedirectForm(Form):
+  """
+  Form for redirect forms
+  """
   next = HiddenField()
 
   def __init__(self, *args, **kwargs):
@@ -30,5 +40,8 @@ class RedirectForm(Form):
 
 
 class LoginForm(RedirectForm):
-    emailaddress = EmailField("Emailadres", validators=[Required()])
-    password = PasswordField("Wachtwoord", validators=[Required()])
+  """
+  Form for Login
+  """
+  emailaddress = EmailField("Emailadres", validators=[Required()])
+  password = PasswordField("Wachtwoord", validators=[Required()])

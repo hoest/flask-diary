@@ -42,7 +42,7 @@ def diary_index():
   """
   Shows all available diaries, includes a form to create a new one.
   """
-  diaries = models.Diary.query.filter(models.Diary.user_id == g.user.id)
+  diaries = models.Diary.query.filter(models.Diary.users.any(models.User.id == g.user.id)).order_by(models.Diary.title)
   return render_template("diary_index.html", diaries=diaries)
 
 
@@ -56,7 +56,8 @@ def diary_create():
 
   if form.validate_on_submit():
     diary = models.Diary(request.form["title"])
-    diary.user_id = g.user.id
+    diary.owner_id = g.user.id
+    diary.users.append(g.user)
 
     db.session.add(diary)
     db.session.commit()
@@ -75,7 +76,7 @@ def diary_edit(diary_slug):
   Edit diary for the current user
   """
   diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.user_id == g.user.id).first_or_404()
+                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
   form = forms.DiaryForm(obj=diary)
 
   if form.validate_on_submit():
@@ -99,7 +100,7 @@ def diary_delete(diary_id):
   Delete a diary
   """
   diary = models.Diary.query.get(diary_id)
-  if diary.user_id == g.user.id:
+  if diary.owner_id == g.user.id:
     db.session.delete(diary)
     db.session.commit()
     flash("Dagboek verwijderd")
@@ -116,8 +117,8 @@ def post_index(diary_slug):
   post to this diary.
   """
   diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.user_id == g.user.id).first_or_404()
-  posts = models.Post.query.filter(models.Post.diary_id == diary.id)
+                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
+  posts = models.Post.query.filter(models.Post.diary_id == diary.id).order_by(models.Post.date.desc())
 
   return render_template("post_index.html", diary=diary, posts=posts)
 
@@ -129,7 +130,7 @@ def post_create(diary_slug):
   POST-method to create a new post
   """
   diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.user_id == g.user.id).first_or_404()
+                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
 
   form = forms.PostForm()
 
@@ -158,7 +159,7 @@ def post_edit(diary_slug, post_slug):
   POST-method to edit post
   """
   diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.user_id == g.user.id).first_or_404()
+                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
   post = models.Post.query.filter(models.Post.slug == post_slug,
                                   models.Post.diary_id == diary.id).first_or_404()
 
@@ -186,7 +187,7 @@ def post_view(diary_slug, post_slug):
   post to this diary.
   """
   diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.user_id == g.user.id).first_or_404()
+                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
   post = models.Post.query.filter(models.Post.slug == post_slug,
                                   models.Post.diary_id == diary.id).first_or_404()
 

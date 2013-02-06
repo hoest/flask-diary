@@ -51,7 +51,7 @@ class Diary(db.Model):
   __tablename__ = "diary"
 
   id = db.Column(db.Integer, primary_key=True)
-  user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+  owner_id = db.Column(db.Integer, db.ForeignKey("user.id"))
   title = db.Column(db.String(1024), nullable=False, index=True)
   slug = db.Column(db.String(256), nullable=False, unique=True)
   created = db.Column(db.DateTime, default=datetime.now)
@@ -105,7 +105,6 @@ class Post(db.Model):
 
     counter = 0
     new = self.slug
-    print self.query.filter(Post.slug == new, Post.diary_id == diary_id)
     while self.query.filter(Post.slug == new, Post.diary_id == diary_id).first() != None:
       counter += 1
       new = "{0}-{1}".format(self.slug, counter)
