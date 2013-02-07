@@ -1,6 +1,6 @@
 from flask import url_for, redirect
 from flask.ext.wtf import HiddenField, Form, TextField, TextAreaField, \
-  PasswordField, Required
+  PasswordField, Required, FileField
 from flask.ext.wtf.html5 import EmailField, DateField
 from utils import get_redirect_target, is_safe_url
 
@@ -19,6 +19,14 @@ class PostForm(Form):
   title = TextField("Titel", validators=[Required()])
   body = TextAreaField("Tekst", validators=[Required()])
   date = DateField("Datum", validators=[Required()])
+
+
+class PictureForm(Form):
+  """
+  Form for the Picture object
+  """
+  title = TextField("Titel", validators=[Required()])
+  file = FileField("Afbeelding", validators=[Required()])
 
 
 class RedirectForm(Form):

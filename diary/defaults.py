@@ -9,3 +9,6 @@ SQLALCHEMY_DATABASE_URI = "sqlite:////{0}/db/diary.db".format(BASEDIR)
 CSRF_ENABLED = True
 
 LOCALE = "nl_NL"
+
+UPLOAD_FOLDER = os.path.join(BASEDIR, "uploads")
+ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])

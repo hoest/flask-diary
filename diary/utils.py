@@ -1,3 +1,4 @@
+from diary import app
 from urlparse import urlparse, urljoin
 from flask import request
 import re
@@ -34,3 +35,8 @@ def get_redirect_target():
       continue
     if is_safe_url(target):
       return target
+
+
+def allowed_file(filename):
+  return '.' in filename and \
+    filename.rsplit('.', 1)[1] in app.config["ALLOWED_EXTENSIONS"]

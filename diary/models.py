@@ -123,7 +123,7 @@ class Picture(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
   title = db.Column(db.String(1024), nullable=False, index=True)
-  file = db.Column(db.Binary, nullable=False)
+  file_url = db.Column(db.String(1024), nullable=False)
   slug = db.Column(db.String(256), nullable=False)
 
   def __init__(self, title):

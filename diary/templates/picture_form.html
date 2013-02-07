@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Afbeelding toevoegen{% endblock %}
+
+{% block header %}Afbeelding toevoegen{% endblock %}
+
+{% block breadcrumbs %}
+  <li><a href="{{ url_for('post_index', diary_slug=diary.slug) }}">{{ diary.title }}</a> <span class="divider">/</span></li>
+  <li><a href="{{ url_for('post_view', diary_slug=diary.slug, post_slug=post.slug) }}">{{ post.title }}</a> <span class="divider">/</span></li>
+  <li class="active">Afbeelding toevoegen</li>
+{% endblock %}
+
+{% block content %}
+  <form class="form-horizontal" method="post" enctype="multipart/form-data" action=".">
+    {{ form.csrf_token }}
+    <div class="control-group">
+      {{ form.title.label(class="control-label") }}
+      <div class="controls">
+        {{ form.title(class="input-xlarge", placeholder=form.title.label.text) }}
+      </div>
+    </div>
+    <div class="control-group">
+      {{ form.file.label(class="control-label") }}
+      <div class="controls">
+        {{ form.file(rows=10, class="input-xlarge", placeholder=form.file.label.text) }}
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <input type="submit" class="btn" value="Opslaan" />
+      </div>
+    </div>
+  </form>
+{% endblock %}

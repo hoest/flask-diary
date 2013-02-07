@@ -1,6 +1,9 @@
-from diary import app, models, db, forms, lm, pages
+from diary import app, models, db, forms, lm, pages, utils
 from flask import g, session, render_template, redirect, url_for, flash, request
 from flask.ext.login import login_required, logout_user, login_user
+from werkzeug import secure_filename
+import os
+import shutil
 
 
 @app.teardown_request
@@ -200,12 +203,87 @@ def post_delete(diary_slug, post_id):
   post = models.Post.query.get(post_id)
 
   if post.user_id == g.user.id:
+    target_dir = os.path.join(app.config["UPLOAD_FOLDER"], "{0}".format(post.id))
+    if os.path.exists(target_dir):
+      shutil.rmtree(target_dir)
+
     db.session.delete(post)
     db.session.commit()
     flash("Bericht verwijderd")
   else:
     flash("U heeft hier geen rechten toe.")
   return redirect(url_for("post_index", diary_slug=diary_slug))
+
+
+@app.route("/<path:diary_slug>/<path:post_slug>/upload/", methods=["GET", "POST"])
+@login_required
+def picture_upload(diary_slug, post_slug):
+  """
+  POST-method to upload a picture
+  """
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
+                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
+  post = models.Post.query.filter(models.Post.slug == post_slug,
+                                  models.Post.diary_id == diary.id).first_or_404()
+
+  form = forms.PictureForm()
+
+  if form.validate_on_submit():
+    picture = models.Picture(request.form["title"])
+    picture.post_id = post.id
+    picture_file = request.files["file"]
+
+    if picture_file and utils.allowed_file(picture_file.filename):
+      filename = secure_filename(picture_file.filename).lower()
+      target_dir = os.path.join(app.config["UPLOAD_FOLDER"], "{0}".format(post.id))
+      if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+
+      picture_file.save(os.path.join(target_dir, filename))
+      picture.file_url = url_for("uploaded_file", post_id=post.id, filename=filename)
+
+    if picture.file_url:
+      db.session.add(picture)
+      db.session.commit()
+      flash("Afbeelding opgeslagen")
+    else:
+      flash("Dit is geen afbeelding of er ging iets fout")
+
+    return redirect(url_for("post_view", diary_slug=diary.slug, post_slug=post.slug))
+  # else:
+  #   flash("Bericht is niet correct ingevoerd")
+
+  return render_template("picture_form.html", form=form, diary=diary, post=post)
+
+
+@app.route("/<path:diary_slug>/<post_slug>/delete/<int:picture_id>/")
+@login_required
+def picture_delete(diary_slug, post_slug, picture_id):
+  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
+                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
+  post = models.Post.query.filter(models.Post.slug == post_slug,
+                                  models.Post.diary_id == diary.id).first_or_404()
+  picture = models.Picture.query.get(picture_id)
+
+  if picture and post.user_id == g.user.id:
+    target_dir = os.path.join(app.config["UPLOAD_FOLDER"], "{0}".format(post.id))
+    picture_file = os.path.join(target_dir, os.path.basename(picture.file_url))
+
+    if os.path.exists(picture_file):
+      # remove file
+      os.remove(picture_file)
+
+      # remove empty dir
+      files = os.listdir(target_dir)
+      if len(files) == 0:
+        os.rmdir(target_dir)
+
+    db.session.delete(picture)
+    db.session.commit()
+    flash("Afbeelding verwijderd")
+  else:
+    flash("U heeft hier geen rechten toe.")
+  return redirect(url_for("post_view", diary_slug=diary_slug, post_slug=post_slug))
 
 
 @app.route("/login/", methods=["GET", "POST"])

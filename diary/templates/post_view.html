@@ -14,6 +14,9 @@
 {% block content %}
   <ul>
     <li>
+      <a href="{{ url_for('picture_upload', diary_slug=diary.slug, post_slug=post.slug) }}">Afbeelding toevoegen...</a>
+    </li>
+    <li>
       <a href="{{ url_for('post_edit', diary_slug=diary.slug, post_slug=post.slug) }}">Bericht bewerken...</a>
     </li>
     <li>
@@ -22,4 +25,11 @@
   </ul>
   <div class="date">{{ post.date.strftime('%e %B %Y') }}</div>
   <div class="text">{{ post.body|markdown }}</div>
+  <div class="pictures">
+  {% for picture in post.pictures %}
+    <div class="picture">
+      <img src="{{ picture.file_url }}" id="pic_{{ picture.id }}" alt="{{ picture.title }}" />
+    </div>
+  {% endfor %}
+  </div>
 {% endblock %}
