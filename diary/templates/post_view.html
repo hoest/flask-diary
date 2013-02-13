@@ -28,7 +28,12 @@
   <div class="pictures">
   {% for picture in post.pictures %}
     <div class="picture">
-      <img src="{{ picture.file_url }}" id="pic_{{ picture.id }}" alt="{{ picture.title }}" />
+      <div class="picture_image">
+        <a href="{{ picture.file_url }}">
+          <img src="{{ picture.thumb_url }}" id="pic_{{ picture.id }}" alt="{{ picture.title }}" />
+        </a>
+      </div>
+      <div class="picture_title">{{ picture.title }}</div>
     </div>
   {% endfor %}
   </div>

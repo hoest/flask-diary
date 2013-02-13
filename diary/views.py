@@ -240,7 +240,11 @@ def picture_upload(diary_slug, post_slug):
         os.makedirs(target_dir)
 
       picture_file.save(os.path.join(target_dir, filename))
+      utils.generate_thumb(os.path.join(target_dir, filename),
+        os.path.join(target_dir, "thumb_{0}".format(filename)),
+        (app.config["THUMBNAIL_WIDTH"], app.config["THUMBNAIL_HEIGHT"]))
       picture.file_url = url_for("uploaded_file", post_id=post.id, filename=filename)
+      picture.thumb_url = url_for("uploaded_file", post_id=post.id, filename="thumb_{0}".format(filename))
 
     if picture.file_url:
       db.session.add(picture)
@@ -268,6 +272,11 @@ def picture_delete(diary_slug, post_slug, picture_id):
   if picture and post.user_id == g.user.id:
     target_dir = os.path.join(app.config["UPLOAD_FOLDER"], "{0}".format(post.id))
     picture_file = os.path.join(target_dir, os.path.basename(picture.file_url))
+    thumb_file = os.path.join(target_dir, os.path.basename(picture.thumb_url))
+
+    if os.path.exists(thumb_file):
+      # remove file
+      os.remove(thumb_file)
 
     if os.path.exists(picture_file):
       # remove file

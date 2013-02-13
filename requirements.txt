@@ -8,6 +8,7 @@ Flask-Script==0.5.3
 Flask-WTF==0.8.2
 Jinja2==2.6
 Markdown==2.2.1
+PIL==1.1.7
 PyYAML==3.10
 SQLAlchemy==0.8.0b2
 WTForms==1.0.3

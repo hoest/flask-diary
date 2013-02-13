@@ -124,6 +124,7 @@ class Picture(db.Model):
   post_id = db.Column(db.Integer, db.ForeignKey("post.id"))
   title = db.Column(db.String(1024), nullable=False, index=True)
   file_url = db.Column(db.String(1024), nullable=False)
+  thumb_url = db.Column(db.String(1024), nullable=True)
   slug = db.Column(db.String(256), nullable=False)
 
   def __init__(self, title):

@@ -12,3 +12,6 @@ LOCALE = "nl_NL"
 
 UPLOAD_FOLDER = os.path.join(BASEDIR, "uploads")
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
+
+THUMBNAIL_WIDTH = 220
+THUMBNAIL_HEIGHT = 220
