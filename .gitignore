@@ -39,3 +39,7 @@ nosetests.xml
 
 # sqlite db folder
 db/
+
+# uploads folder
+uploads/
+
