@@ -45,7 +45,7 @@ def diary_index():
   """
   Shows all available diaries, includes a form to create a new one.
   """
-  diaries = models.Diary.query.filter(models.Diary.users.any(models.User.id == g.user.id)).order_by(models.Diary.title)
+  diaries = g.user.sorted_diaries()
   return render_template("diary_index.html", diaries=diaries)
 
 
@@ -78,8 +78,7 @@ def diary_edit(diary_slug):
   """
   Edit diary for the current user
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
+  diary = g.user.get_diary(diary_slug).first_or_404()
   form = forms.DiaryForm(obj=diary)
 
   if form.validate_on_submit():
@@ -89,7 +88,7 @@ def diary_edit(diary_slug):
     db.session.add(diary)
     db.session.commit()
     flash("Dagboek gewijzigd")
-    return redirect(url_for("diary_index"))
+    return redirect(url_for("post_index", diary_slug=diary.slug))
   # else:
   #   flash("Dagboek is niet correct ingevoerd")
 
@@ -119,9 +118,8 @@ def post_index(diary_slug):
   Shows all available posts in the current diary, includes a form to add a new
   post to this diary.
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
-  posts = models.Post.query.filter(models.Post.diary_id == diary.id).order_by(models.Post.date.desc())
+  diary = g.user.get_diary(diary_slug).first_or_404()
+  posts = diary.sorted_posts()
 
   return render_template("post_index.html", diary=diary, posts=posts)
 
@@ -132,9 +130,7 @@ def post_create(diary_slug):
   """
   POST-method to create a new post
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
-
+  diary = g.user.get_diary(diary_slug).first_or_404()
   form = forms.PostForm()
 
   if form.validate_on_submit():
@@ -161,10 +157,8 @@ def post_edit(diary_slug, post_slug):
   """
   POST-method to edit post
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
-  post = models.Post.query.filter(models.Post.slug == post_slug,
-                                  models.Post.diary_id == diary.id).first_or_404()
+  diary = g.user.get_diary(diary_slug).first_or_404()
+  post = diary.get_post(post_slug).first_or_404()
 
   form = forms.PostForm(obj=post)
 
@@ -189,11 +183,8 @@ def post_view(diary_slug, post_slug):
   Shows all available posts in the current diary, includes a form to add a new
   post to this diary.
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
-  post = models.Post.query.filter(models.Post.slug == post_slug,
-                                  models.Post.diary_id == diary.id).first_or_404()
-
+  diary = g.user.get_diary(diary_slug).first_or_404()
+  post = diary.get_post(post_slug).first_or_404()
   return render_template("post_view.html", diary=diary, post=post)
 
 
@@ -221,10 +212,8 @@ def picture_upload(diary_slug, post_slug):
   """
   POST-method to upload a picture
   """
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
-  post = models.Post.query.filter(models.Post.slug == post_slug,
-                                  models.Post.diary_id == diary.id).first_or_404()
+  diary = g.user.get_diary(diary_slug).first_or_404()
+  post = diary.get_post(post_slug).first_or_404()
 
   form = forms.PictureForm()
 
@@ -263,10 +252,8 @@ def picture_upload(diary_slug, post_slug):
 @app.route("/<path:diary_slug>/<post_slug>/delete/<int:picture_id>/")
 @login_required
 def picture_delete(diary_slug, post_slug, picture_id):
-  diary = models.Diary.query.filter(models.Diary.slug == diary_slug,
-                                    models.Diary.users.any(models.User.id == g.user.id)).first_or_404()
-  post = models.Post.query.filter(models.Post.slug == post_slug,
-                                  models.Post.diary_id == diary.id).first_or_404()
+  diary = g.user.get_diary(diary_slug).first_or_404()
+  post = diary.get_post(post_slug).first_or_404()
   picture = models.Picture.query.get(picture_id)
 
   if picture and post.user_id == g.user.id:

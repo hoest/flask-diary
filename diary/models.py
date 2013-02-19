@@ -28,8 +28,8 @@ class User(db.Model, UserMixin):
   created = db.Column(db.DateTime, default=datetime.now)
 
   # relations
-  diaries = db.relationship("Diary", secondary=dairy_user_table, backref="users")
-  posts = db.relationship("Post", backref="users")
+  diaries = db.relationship("Diary", secondary=dairy_user_table, lazy="dynamic")
+  posts = db.relationship("Post", lazy="dynamic")
 
   def __init__(self, firstname, lastname, emailaddress, password):
     self.firstname = firstname
@@ -39,6 +39,12 @@ class User(db.Model, UserMixin):
 
   def is_password_correct(self, password):
     return bcrypt.check_password_hash(self.password, password)
+
+  def get_diary(self, slug):
+    return self.diaries.filter(Diary.slug == slug)
+
+  def sorted_diaries(self):
+    return self.diaries.order_by(Diary.title)
 
   def __repr__(self):
     return u"<User %s>" % (self.emailaddress)
@@ -57,7 +63,7 @@ class Diary(db.Model):
   created = db.Column(db.DateTime, default=datetime.now)
 
   # relations
-  posts = db.relationship("Post", backref="diaries")
+  posts = db.relationship("Post", lazy="dynamic")
 
   def __init__(self, title):
     self.title = title
@@ -72,6 +78,12 @@ class Diary(db.Model):
       counter += 1
       new = "{0}-{1}".format(self.slug, counter)
     self.slug = new
+
+  def get_post(self, slug):
+    return self.posts.filter(Post.slug == slug)
+
+  def sorted_posts(self):
+    return self.posts.order_by(Post.date.desc())
 
   def __repr__(self):
     return u"<Diary %s>" % (self.title)
@@ -94,7 +106,7 @@ class Post(db.Model):
   modified = db.Column(db.DateTime, default=datetime.now)
 
   # relations
-  pictures = db.relationship("Picture", backref="posts")
+  pictures = db.relationship("Picture", lazy="dynamic")
 
   def __init__(self, diary_id, title):
     self.title = title
