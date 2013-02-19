@@ -1,9 +1,131 @@
 body {
+  padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
   background-color: #ffffff;
+  background-image: url(../img/kleed.png);
 }
 
-.date {
-  font-style: italic;
-  text-align: right;
-  margin-bottom: .5rem;
+.spacer {
+  height: 75px;
+}
+
+.header {
+  margin-left: 10rem;
+  background-image: url('../img/titel-vlak.png');
+  background-repeat: no-repeat;
+  width: 596px;
+  height:153px;
+  padding: 15px 25px 25px 65px;
+  position: absolute;
+  top: 55px;
+  z-index: -1;
+}
+
+.dagboek-top {
+  background-image: url('../img/dagboek-top.png');
+  margin-left: 5rem;
+  height: 143px;
+  width: 946px;
+}
+
+.dagboek {
+  background-image: url('../img/dagboek-bg.png');
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.3rem;
+  width: 946px;
+  margin-left: 5rem;
+  margin-top: -2rem;
+}
+
+.container {
+  width: 100%;
+  margin-left: 125px;
+}
+
+.header h1,
+.container h2,
+.container .date {
+  font-family: 'Roboto';
+  margin-bottom: 1rem;
+}
+
+.container .date {
+  float: right;
+}
+
+.navbar .brand {
+  background-image: url('../img/online-dagboek-logo.png');
+  background-repeat: no-repeat;
+  text-indent: -99999px;
+  width: 184px;
+}
+
+/* polaroids */
+ul.polaroids img {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+ul.polaroids .paperclip {
+  display: block;
+  background-image: url('../img/paperclip.png');
+  background-repeat: no-repeat;
+  height: 44px;
+  width: 141px;
+  position: absolute;
+  z-index: 2;
+  top: 25px;
+  left: 153px;
+}
+
+ul.polaroids a:after {
+  content: attr(title);
+}
+
+ul.polaroids a {
+  display: block;
+  background-color: #fff;
+  width: 240px;
+  padding: 5px;
+  text-align: center;
+  margin-bottom: 5px;
+  font-family: 'Permanent Marker', cursive;
+  font-weight: bold;
+  color: #000;
+}
+
+ul.polaroids a:hover {
+  text-decoration: none;
+}
+
+ul.polaroids li {
+  display: inline;
+  position: relative;
+}
+
+/* Rotate all even images 2 degrees */
+ul.polaroids li:nth-child(even) a {
+  -webkit-transform: rotate(5deg);
+  -moz-transform: rotate(5deg);
+}
+
+ul.polaroids li:nth-child(even) .paperclip {
+  -webkit-transform: rotate(-15deg);
+  -moz-transform: rotate(-15deg);
+}
+
+/* Rotate all even images 2 degrees */
+ul.polaroids li:nth-child(odd) a {
+  -webkit-transform: rotate(-5deg);
+  -moz-transform: rotate(-5deg);
+}
+
+ul.polaroids li:nth-child(odd) .paperclip {
+  -webkit-transform: rotate(15deg);
+  -moz-transform: rotate(15deg);
+}
+
+/* On hover, darken the shadows a bit */
+ul.polaroids a {
+  -webkit-box-shadow: 0 3px 6px rgba(0,0,0,.5);
+  -moz-box-shadow: 0 3px 6px rgba(0,0,0,.5);
 }

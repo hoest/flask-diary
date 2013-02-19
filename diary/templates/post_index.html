@@ -9,22 +9,38 @@
 {% endblock %}
 
 {% block content %}
-  <ul>
-    <li>
-      <a href="{{ url_for('diary_edit', diary_slug=diary.slug) }}">Dagboek bewerken...</a>
-    </li>
-    <li>
-      <a href="{{ url_for('diary_delete', diary_id=diary.id) }}">Dagboek verwijderen...</a>
-    </li>
-    <li>
-      <a href="{{ url_for('post_create', diary_slug=diary.slug) }}">Bericht toevoegen...</a>
-    </li>
-  </ul>
   {% for post in posts %}
-    <h2>
-      <a href="{{ url_for('post_view', diary_slug=diary.slug, post_slug=post.slug) }}">{{ post.title }}</a>
-    </h2>
-    <div class="date">{{ post.date.strftime('%e %B %Y') }}</div>
-    <div class="text">{{ post.body|truncate(killwords=True)|markdown }}</div>
+    <div class="span6">
+      <div class="date">{{ post.date.strftime('%e %B %Y') }}</div>
+      <h2>
+        {{ post.title }}
+      </h2>
+      <ul class="edit-buttons">
+        <li>
+          <a href="{{ url_for('picture_upload', diary_slug=diary.slug, post_slug=post.slug) }}">Afbeelding toevoegen</a>
+        </li>
+        <li>
+          <a href="{{ url_for('post_edit', diary_slug=diary.slug, post_slug=post.slug) }}">Bericht bewerken</a>
+        </li>
+        <li>
+          <a href="{{ url_for('post_delete', diary_slug=diary.slug, post_id=post.id) }}">Bericht verwijderen</a>
+        </li>
+      </ul>
+      <div class="text">{{ post.body|markdown }}</div>
+    </div>
+    <div class="span2">
+    {% if post.pictures %}
+      <ul class="polaroids">
+        {% for picture in post.pictures %}
+          <li class="picture">
+            <span class="paperclip"></span>
+            <a href="{{ picture.file_url }}" title="{{ picture.title }}">
+              <img src="{{ picture.thumb_url }}" id="pic_{{ picture.id }}" alt="{{ picture.title }}" />
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    </div>
   {% endfor %}
 {% endblock %}
