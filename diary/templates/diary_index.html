@@ -4,23 +4,27 @@
 
 {% block header %}Dagboeken{% endblock %}
 
-{% block breadcrumbs %}
-  <li class="active">Dagboeken</li>
-{% endblock %}
-
 {% block content %}
-  <ul>
-    <li>
-      <a href="{{ url_for('diary_create') }}">Dagboek toevoegen...</a>
-    </li>
-  </ul>
-  {% if diaries %}
+  <div class="span8">
+    <p>Beste {{ g.user.firstname }},</p>
+    <p>Welkom bij je eigen dagboekenverzameling op <a href="/">Online Dagboek</a>.
+    Wanneer je al eerder hier bent geweest en al een dagboek hebt aangemaakt, zul
+    je hieronder een lijst vinden met al je eigen dagboeken.</p>
+    <p>Bovenin het scherm heb je een dynamische menubalk. Via deze menubalk kun
+    je de functionaliteiten gebruiken die de pagina waarop je bent, bevat. Kortom:
+    met deze menubalk kom je overal en kun je gebruik maken van alle functionaliteiten
+    die wij je te bieden hebben.</p>
+    <p>Mocht je hier voor het eerst komen, <a href="{{ url_for('diary_create') }}">maak
+    dan een nieuw dagboek</a> aan.</p>
+
+    {% if diaries %}
     <ul>
-    {% for diary in diaries %}
+      {% for diary in diaries %}
       <li>
-        <a href="{{ url_for('post_index', diary_slug=diary.slug) }}">{{ diary.title }}</a>
+      <a href="{{ url_for('post_index', diary_slug=diary.slug) }}">{{ diary.title }}</a>
       </li>
-    {% endfor %}
+      {% endfor %}
     </ul>
-  {% endif %}
+    {% endif %}
+  </div>
 {% endblock %}

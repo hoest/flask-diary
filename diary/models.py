@@ -6,7 +6,9 @@ from flask.ext.login import UserMixin
 ROLE_USER = 0
 ROLE_ADMIN = 1
 
-dairy_user_table = db.Table("dairy_user", db.Model.metadata,
+dairy_user_table = db.Table(
+  "dairy_user",
+  db.Model.metadata,
   db.Column("diary_id", db.Integer, db.ForeignKey("diary.id")),
   db.Column("user_id", db.Integer, db.ForeignKey("user.id"))
 )
@@ -28,7 +30,7 @@ class User(db.Model, UserMixin):
   created = db.Column(db.DateTime, default=datetime.now)
 
   # relations
-  diaries = db.relationship("Diary", secondary=dairy_user_table, lazy="dynamic")
+  diaries = db.relationship("Diary", secondary=dairy_user_table, lazy="dynamic", backref="users")
   posts = db.relationship("Post", lazy="dynamic")
 
   def __init__(self, firstname, lastname, emailaddress, password):
@@ -74,7 +76,7 @@ class Diary(db.Model):
 
     counter = 0
     new = self.slug
-    while self.query.filter(Diary.slug == new).first() != None:
+    while self.query.filter(Diary.slug == new).first() is not None:
       counter += 1
       new = "{0}-{1}".format(self.slug, counter)
     self.slug = new
@@ -117,7 +119,7 @@ class Post(db.Model):
 
     counter = 0
     new = self.slug
-    while self.query.filter(Post.slug == new, Post.diary_id == diary_id).first() != None:
+    while self.query.filter(Post.slug == new, Post.diary_id == diary_id).first() is not None:
       counter += 1
       new = "{0}-{1}".format(self.slug, counter)
     self.slug = new

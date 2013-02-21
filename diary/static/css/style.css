@@ -8,6 +8,13 @@ body {
   height: 75px;
 }
 
+.spacer-bottom {
+  height: 75px;
+  clear: both;
+  float: left;
+  width: 100%;
+}
+
 .header {
   margin-left: 10rem;
   background-image: url('../img/titel-vlak.png');
@@ -31,6 +38,7 @@ body {
   background-image: url('../img/dagboek-bg.png');
   font-family: 'Indie Flower', cursive;
   font-size: 1.3rem;
+  line-height: 1.7rem;
   width: 946px;
   margin-left: 5rem;
   margin-top: -2rem;
@@ -48,8 +56,19 @@ body {
   margin-bottom: 1rem;
 }
 
+.container h2 {
+  clear: both;
+}
+
 .container .date {
   float: right;
+}
+
+.container .post {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
 .navbar .brand {

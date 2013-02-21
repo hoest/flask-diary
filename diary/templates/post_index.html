@@ -10,6 +10,7 @@
 
 {% block content %}
   {% for post in posts %}
+  <div class="post">
     <div class="span6">
       <div class="date">{{ post.date.strftime('%e %B %Y') }}</div>
       <h2>
@@ -17,30 +18,36 @@
       </h2>
       <ul class="edit-buttons">
         <li>
-          <a href="{{ url_for('picture_upload', diary_slug=diary.slug, post_slug=post.slug) }}">Afbeelding toevoegen</a>
+        <a href="{{ url_for('picture_upload', diary_slug=diary.slug, post_slug=post.slug) }}">Afbeelding toevoegen</a>
         </li>
         <li>
-          <a href="{{ url_for('post_edit', diary_slug=diary.slug, post_slug=post.slug) }}">Bericht bewerken</a>
+        <a href="{{ url_for('post_edit', diary_slug=diary.slug, post_slug=post.slug) }}">Bericht bewerken</a>
         </li>
         <li>
-          <a href="{{ url_for('post_delete', diary_slug=diary.slug, post_id=post.id) }}">Bericht verwijderen</a>
+        <a href="{{ url_for('post_delete', diary_slug=diary.slug, post_id=post.id) }}">Bericht verwijderen</a>
         </li>
       </ul>
       <div class="text">{{ post.body|markdown }}</div>
     </div>
     <div class="span2">
-    {% if post.pictures %}
+      {% if post.pictures %}
       <ul class="polaroids">
         {% for picture in post.pictures %}
-          <li class="picture">
-            <span class="paperclip"></span>
-            <a href="{{ picture.file_url }}" title="{{ picture.title }}">
-              <img src="{{ picture.thumb_url }}" id="pic_{{ picture.id }}" alt="{{ picture.title }}" />
-            </a>
-          </li>
+        <li class="picture">
+        <span class="paperclip"></span>
+        <a href="{{ picture.file_url }}" title="{{ picture.title }}">
+          <img src="{{ picture.thumb_url }}" id="pic_{{ picture.id }}" alt="{{ picture.title }}" />
+        </a>
+        <a class="delete-image" href="{{ url_for('picture_delete', diary_slug=diary.slug, post_slug=post.slug, picture_id=picture.id) }}">Verwijder deze afbeelding</a>
+        </li>
         {% endfor %}
       </ul>
-    {% endif %}
+      {% endif %}
     </div>
+  </div>
+  {% else %}
+  <div class="span8">
+    <p>Het dagboek is aangemaakt, je kunt nu je <a href="{{ url_for('post_create', diary_slug=diary.slug) }}">berichten gaan toevoegen</a>.<p>
+  </div>
   {% endfor %}
 {% endblock %}

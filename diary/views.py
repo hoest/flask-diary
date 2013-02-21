@@ -22,6 +22,7 @@ def check_user_status():
   g.user = None
   if "user_id" in session:
     g.user = models.User.query.get(session["user_id"])
+    g.diaries = g.user.sorted_diaries()
 
 
 @lm.user_loader
@@ -45,8 +46,10 @@ def diary_index():
   """
   Shows all available diaries, includes a form to create a new one.
   """
-  diaries = g.user.sorted_diaries()
-  return render_template("diary_index.html", diaries=diaries)
+  if g.diaries:
+    return redirect(url_for("post_index", diary_slug=g.diaries.first().slug))
+
+  return render_template("diary_index.html", diaries=g.diaries)
 
 
 @app.route("/create/", methods=["POST", "GET"])
@@ -65,7 +68,7 @@ def diary_create():
     db.session.add(diary)
     db.session.commit()
     flash("Dagboek toegevoegd")
-    return redirect(url_for("diary_index"))
+    return redirect(url_for("post_index", diary_slug=diary.slug))
   # else:
   #   flash("Dagboek is niet correct ingevoerd")
 
@@ -176,18 +179,6 @@ def post_edit(diary_slug, post_slug):
   return render_template("post_form.html", form=form, diary=diary)
 
 
-@app.route("/<path:diary_slug>/<path:post_slug>/")
-@login_required
-def post_view(diary_slug, post_slug):
-  """
-  Shows all available posts in the current diary, includes a form to add a new
-  post to this diary.
-  """
-  diary = g.user.get_diary(diary_slug).first_or_404()
-  post = diary.get_post(post_slug).first_or_404()
-  return render_template("post_view.html", diary=diary, post=post)
-
-
 @app.route("/<path:diary_slug>/delete/<int:post_id>/")
 @login_required
 def post_delete(diary_slug, post_id):
@@ -229,7 +220,8 @@ def picture_upload(diary_slug, post_slug):
         os.makedirs(target_dir)
 
       picture_file.save(os.path.join(target_dir, filename))
-      utils.generate_thumb(os.path.join(target_dir, filename),
+      utils.generate_thumb(
+        os.path.join(target_dir, filename),
         os.path.join(target_dir, "thumb_{0}".format(filename)),
         (app.config["THUMBNAIL_WIDTH"], app.config["THUMBNAIL_HEIGHT"]))
       picture.file_url = url_for("uploaded_file", post_id=post.id, filename=filename)
@@ -242,7 +234,7 @@ def picture_upload(diary_slug, post_slug):
     else:
       flash("Dit is geen afbeelding of er ging iets fout")
 
-    return redirect(url_for("post_view", diary_slug=diary.slug, post_slug=post.slug))
+    return redirect(url_for("post_index", diary_slug=diary.slug))
   # else:
   #   flash("Bericht is niet correct ingevoerd")
 
@@ -279,7 +271,7 @@ def picture_delete(diary_slug, post_slug, picture_id):
     flash("Afbeelding verwijderd")
   else:
     flash("U heeft hier geen rechten toe.")
-  return redirect(url_for("post_view", diary_slug=diary_slug, post_slug=post_slug))
+  return redirect(url_for("post_index", diary_slug=diary_slug))
 
 
 @app.route("/login/", methods=["GET", "POST"])
@@ -287,7 +279,8 @@ def login():
   form = forms.LoginForm()
   if form.validate_on_submit():
     # login and validate the user...
-    user = models.User.query.filter(models.User.emailaddress == request.form["emailaddress"]).first()
+    email = request.form["emailaddress"].lower()
+    user = models.User.query.filter(models.User.emailaddress == email).first()
     if user is not None and user.is_password_correct(request.form["password"]):
       login_user(user)
       flash("U bent ingelogd")
@@ -301,5 +294,5 @@ def login():
 @app.route("/logout/")
 @login_required
 def logout():
-    logout_user()
-    return redirect(url_for("login"))
+  logout_user()
+  return redirect(url_for("login"))

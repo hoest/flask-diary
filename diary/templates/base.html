@@ -32,7 +32,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Online Dagboek</a>
+          <a class="brand" href="{{ url_for('diary_index') }}">Online Dagboek</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               {% if g.user %}
@@ -42,7 +42,7 @@
                     <b class="caret"></b>
                   </a>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown1">
-                    {% for diary in diaries %}
+                    {% for diary in g.diaries %}
                       <li>
                         <a href="{{ url_for('post_index', diary_slug=diary.slug) }}">{{ diary.title }}</a>
                       </li>
@@ -83,9 +83,9 @@
             </ul>
           </div>
 
-          <form class="navbar-search pull-right">
+          <!-- <form class="navbar-search pull-right">
             <input type="text" class="search-query" placeholder="Zoeken">
-          </form>
+          </form> -->
         </div>
       </div>
     </div>
@@ -112,7 +112,9 @@
               </div>
             {% endif %}
           {% endwith %}
-          {% block content %}{% endblock %}
+          {% block content %}
+          {% endblock %}
+          <div class="spacer-bottom"></div>
         </div>
       </div>
     </div>
