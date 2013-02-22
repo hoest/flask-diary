@@ -19,7 +19,7 @@ app.config.from_envvar("SETTINGS", silent=True)
 # Uploads
 app.add_url_rule("/uploads/<post_id>/<filename>", "uploaded_file", build_only=True)
 app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
-  "/uploads":  app.config["UPLOAD_FOLDER"]
+  "/uploads": app.config["UPLOAD_FOLDER"]
 })
 
 locale.setlocale(locale.LC_ALL, app.config["LOCALE"])

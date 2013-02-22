@@ -1,5 +1,5 @@
 from diary import app, models, db, forms, lm, pages, utils
-from flask import g, session, render_template, redirect, url_for, flash, request
+from flask import g, session, render_template, redirect, url_for, flash, request, send_from_directory
 from flask.ext.login import login_required, logout_user, login_user
 from werkzeug import secure_filename
 import os
@@ -38,6 +38,12 @@ def page(path):
     page = pages.get_or_404(path)
     template = page.meta.get("template", "page.html")
     return render_template(template, page=page)
+
+
+@app.route("/favicon.ico")
+def favicon():
+  return send_from_directory(os.path.join(app.root_path, "static"),
+                             "favicon.ico", mimetype="image/vnd.microsoft.icon")
 
 
 @app.route("/")
