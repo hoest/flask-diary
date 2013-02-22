@@ -5,6 +5,16 @@ $(function() {
       scrollTop: $('#post_' + post_id).offset().top
     }, 500);
   }
+
+  $('.alert-block').delay(1000).slideUp();
+
+  $('.edit-buttons li a').each(function() {
+    $(this).attr('title', $(this).text());
+  });
+
+  $('.delete-image').each(function() {
+    $(this).attr('title', $(this).text());
+  });
 });
 
 function getParameterByName(name) {

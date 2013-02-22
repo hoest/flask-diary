@@ -103,6 +103,53 @@ body {
   width: 184px;
 }
 
+.edit-buttons {
+  clear: both;
+  float: right;
+  position: relative;
+  top: -65px;
+  right: 0px;
+}
+
+.edit-buttons li {
+  list-style:none;
+  float: left;
+  margin-right: 5px;
+}
+
+.edit-buttons li a {
+  display: block;
+  background-repeat: no-repeat;
+  width: 32px;
+  height: 32px;
+  text-indent:-9999px;
+}
+
+.edit-buttons li.add-picture a {
+  background-image: url('../img/icoon-pic.png');
+}
+
+.edit-buttons li.edit-post a {
+  background-image: url('../img/icoon-abc.png');
+}
+
+.edit-buttons li.delete-post a {
+  background-image: url('../img/icoon-trash.png');
+}
+
+.delete-image {
+  background-image: url('../img/icoon-trash.png');
+  width: 32px;
+  height: 32px;
+  display: block;
+  background-repeat: no-repeat;
+  position: relative;
+  top: -265px;
+  right: -200px;
+  text-indent: -9999px;
+  z-index: 5;
+}
+
 /* polaroids */
 ul.polaroids img {
   margin-top: 5px;
@@ -121,11 +168,11 @@ ul.polaroids .paperclip {
   left: 153px;
 }
 
-ul.polaroids a:after {
+ul.polaroids a.image-link:after {
   content: attr(title);
 }
 
-ul.polaroids a {
+ul.polaroids a.image-link {
   display: block;
   background-color: #fff;
   width: 240px;
@@ -137,7 +184,7 @@ ul.polaroids a {
   color: #000;
 }
 
-ul.polaroids a:hover {
+ul.polaroids a.image-link:hover {
   text-decoration: none;
 }
 
@@ -147,7 +194,7 @@ ul.polaroids li {
 }
 
 /* Rotate all even images 2 degrees */
-ul.polaroids li:nth-child(even) a {
+ul.polaroids li:nth-child(even) a.image-link {
   -webkit-transform: rotate(5deg);
   -moz-transform: rotate(5deg);
 }
@@ -158,7 +205,7 @@ ul.polaroids li:nth-child(even) .paperclip {
 }
 
 /* Rotate all even images 2 degrees */
-ul.polaroids li:nth-child(odd) a {
+ul.polaroids li:nth-child(odd) a.image-link {
   -webkit-transform: rotate(-5deg);
   -moz-transform: rotate(-5deg);
 }
@@ -169,7 +216,7 @@ ul.polaroids li:nth-child(odd) .paperclip {
 }
 
 /* On hover, darken the shadows a bit */
-ul.polaroids a {
+ul.polaroids a.image-link {
   -webkit-box-shadow: 0 3px 6px rgba(0,0,0,.5);
   -moz-box-shadow: 0 3px 6px rgba(0,0,0,.5);
 }

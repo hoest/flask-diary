@@ -17,13 +17,13 @@
         {{ post.title }}
       </h2>
       <ul class="edit-buttons">
-        <li>
+        <li class="add-picture">
         <a href="{{ url_for('picture_upload', diary_slug=diary.slug, post_slug=post.slug) }}">Afbeelding toevoegen</a>
         </li>
-        <li>
+        <li class="edit-post">
         <a href="{{ url_for('post_edit', diary_slug=diary.slug, post_slug=post.slug) }}">Bericht bewerken</a>
         </li>
-        <li>
+        <li class="delete-post">
         <a href="{{ url_for('post_delete', diary_slug=diary.slug, post_id=post.id) }}">Bericht verwijderen</a>
         </li>
       </ul>
@@ -35,7 +35,7 @@
         {% for picture in post.pictures %}
         <li class="picture">
         <span class="paperclip"></span>
-        <a href="{{ picture.file_url }}" title="{{ picture.title }}">
+        <a class="image-link" href="{{ picture.file_url }}" title="{{ picture.title }}">
           <img src="{{ picture.thumb_url }}" id="pic_{{ picture.id }}" alt="{{ picture.title }}" />
         </a>
         <a class="delete-image" href="{{ url_for('picture_delete', diary_slug=diary.slug, post_slug=post.slug, picture_id=picture.id) }}">Verwijder deze afbeelding</a>
