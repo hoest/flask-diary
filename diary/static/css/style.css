@@ -27,11 +27,31 @@ body {
   z-index: -1;
 }
 
+.welcome {
+  display: block;
+  float: right;
+  padding: 10px 20px 10px;
+  margin-left: -20px;
+  color: #e7e7e7;
+}
+
 .dagboek-top {
   background-image: url('../img/dagboek-top.png');
   margin-left: 5rem;
   height: 143px;
   width: 946px;
+  clear: both;
+}
+
+.dagboek-bottom {
+  background-image: url('../img/dagboek-bottom.png');
+  background-repeat: no-repeat;
+  margin-left: 5rem;
+  height: 143px;
+  width: 946px;
+  clear: both;
+  text-align: center;
+  padding-top: 3rem;
 }
 
 .dagboek {
@@ -40,13 +60,18 @@ body {
   font-size: 1.3rem;
   line-height: 1.7rem;
   width: 946px;
+  clear: both;
   margin-left: 5rem;
-  margin-top: -2rem;
 }
 
 .container {
   width: 100%;
   margin-left: 125px;
+}
+
+.dagboek .container,
+.dagboek-bottom .container {
+  font-family: 'Indie Flower', cursive;
 }
 
 .header h1,

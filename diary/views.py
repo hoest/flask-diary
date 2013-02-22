@@ -147,7 +147,7 @@ def post_create(diary_slug):
     db.session.commit()
 
     flash("Bericht toegevoegd")
-    return redirect(url_for("post_index", diary_slug=diary.slug))
+    return redirect(url_for("post_index", diary_slug=diary.slug, post_id=post.id))
   # else:
   #   flash("Bericht is niet correct ingevoerd")
 
@@ -172,7 +172,7 @@ def post_edit(diary_slug, post_slug):
     db.session.commit()
 
     flash("Bericht gewijzigd")
-    return redirect(url_for("post_index", diary_slug=diary.slug))
+    return redirect(url_for("post_index", diary_slug=diary.slug, post_id=post.id))
   # else:
   #   flash("Bericht is niet correct ingevoerd")
 
@@ -234,7 +234,7 @@ def picture_upload(diary_slug, post_slug):
     else:
       flash("Dit is geen afbeelding of er ging iets fout")
 
-    return redirect(url_for("post_index", diary_slug=diary.slug))
+    return redirect(url_for("post_index", diary_slug=diary.slug, post_id=post.id))
   # else:
   #   flash("Bericht is niet correct ingevoerd")
 
@@ -271,7 +271,7 @@ def picture_delete(diary_slug, post_slug, picture_id):
     flash("Afbeelding verwijderd")
   else:
     flash("U heeft hier geen rechten toe.")
-  return redirect(url_for("post_index", diary_slug=diary_slug))
+  return redirect(url_for("post_index", diary_slug=diary_slug, post_id=post.id))
 
 
 @app.route("/login/", methods=["GET", "POST"])
@@ -282,7 +282,10 @@ def login():
     email = request.form["emailaddress"].lower()
     user = models.User.query.filter(models.User.emailaddress == email).first()
     if user is not None and user.is_password_correct(request.form["password"]):
-      login_user(user)
+      remember_me = False
+      if "remember_me" in request.form:
+        remember_me = request.form["remember_me"]
+      login_user(user, remember_me)
       flash("U bent ingelogd")
       return form.redirect("diary_index")
     else:
