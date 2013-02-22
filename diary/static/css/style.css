@@ -77,7 +77,7 @@ body {
 .header h1,
 .container h2,
 .container .date {
-  font-family: 'Roboto';
+  font-family: 'Nunito', sans-serif;
   margin-bottom: 1rem;
 }
 
