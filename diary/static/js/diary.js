@@ -1,3 +1,17 @@
+var Aloha = window.Aloha || (window.Aloha = {});
+Aloha.settings = {
+  locale: 'nl',
+  plugins: {
+    format: {
+      // all elements with no specific configuration get this configuration
+      config: [ 'b', 'i', 'p' , 'removeFormat' ],
+      sidebar: {
+        disabled: false
+      }
+    }
+  }
+};
+
 $(function() {
   post_id = getParameterByName('post_id');
   if(post_id && post_id !== '') {
@@ -14,6 +28,13 @@ $(function() {
 
   $('.delete-image').each(function() {
     $(this).attr('title', $(this).text());
+  });
+
+  $('#date').datepicker({ dateFormat: 'yy-mm-dd' });
+
+  Aloha.ready(function() {
+    var $ = Aloha.jQuery;
+    $('#body').aloha();
   });
 });
 
