@@ -2,8 +2,11 @@ Flask-Diary
 ===========
 TODO-list:
 
-* Autorisation
-* Authentication
+* ~~Create model~~
+* ~~Create application framework~~
+* ~~Autorisation~~
+* ~~Authentication~~
 * User-management
-* Styling
-* Logo design
+* ~~Styling~~
+* ~~Logo design~~
+* Testing
