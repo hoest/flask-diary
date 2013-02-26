@@ -6,14 +6,6 @@ import os
 import shutil
 
 
-@app.teardown_request
-def teardown_request(exception=None):
-  """
-  Closes the database again at the end of the request.
-  """
-  db.session.close()
-
-
 @app.before_request
 def check_user_status():
   """
