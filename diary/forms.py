@@ -3,6 +3,7 @@ from flask.ext.wtf import HiddenField, Form, TextField, TextAreaField, \
   PasswordField, Required, FileField, BooleanField
 from flask.ext.wtf.html5 import EmailField, DateField
 from utils import get_redirect_target, is_safe_url
+import datetime
 
 
 class DiaryForm(Form):
@@ -17,8 +18,8 @@ class PostForm(Form):
   Form for the Post object
   """
   title = TextField("Titel", validators=[Required()])
-  body = TextAreaField("Tekst", validators=[Required()])
-  date = DateField("Datum", validators=[Required()])
+  body = TextAreaField("Tekst", default="Voer hier je tekst in...", validators=[Required()])
+  date = DateField("Datum", default=datetime.datetime.now(), validators=[Required()])
 
 
 class PictureForm(Form):

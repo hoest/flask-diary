@@ -137,6 +137,14 @@ body {
   background-image: url('../img/icoon-trash.png');
 }
 
+#body-editor {
+  margin: 1rem 0;
+  padding: 10px;
+  width: 440px;
+  border: 1px solid #ccc;
+  min-height: 320px;
+}
+
 .delete-image {
   background-image: url('../img/icoon-trash.png');
   width: 32px;
