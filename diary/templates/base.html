@@ -2,23 +2,27 @@
 <html lang="nl">
   <head>
     <meta charset="utf-8" />
-    <title>{% block title %}{% endblock %} - Online Dagboek</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{% block title %}{% endblock %} - Online Dagboek</title>
+
     <meta name="description" content="Met Online Dagboek kun je je eigen dagboek bijhouden, simpel en afgesloten voor de buitenwereld." />
     <meta name="author" content="Jelle de Jong, jelle@hoest.nl" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="{{ url_for('static', filename='favicon-128.png') }}" />
+
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Indie+Flower|Nunito|Permanent+Marker" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <!-- load the Aloha Editor CSS styles -->
-    <link href="http://cdn.aloha-editor.org/latest/css/aloha.css" rel="stylesheet" type="text/css" />
-
+    <!-- <link href="http://cdn.aloha-editor.org/latest/css/aloha.css" rel="stylesheet" type="text/css" /> -->
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon-128.png') }}" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="icon" href="{{ url_for('static', filename='favicon-32.png') }}" />
     <!--[if IE]><link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" /><![endif]-->
-    <meta name="msapplication-TileColor" content="#FFFFFF" />
-    <meta name="msapplication-TileImage" content="{{ url_for('static', filename='favicon-128.png') }}" />
+
+    <script src="{{ url_for('static', filename='js/modernizr.min.js' }}"></script>
   </head>
   <body>
     <script type="text/javascript">
@@ -144,12 +148,12 @@
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
     <!-- load the jQuery and require.js libraries -->
-    <script src="http://cdn.aloha-editor.org/latest/lib/require.js"></script>
+    <!-- <script src="http://cdn.aloha-editor.org/latest/lib/require.js"></script> -->
 
     <!-- load the Aloha Editor core and some plugins -->
-    <script src="http://cdn.aloha-editor.org/latest/lib/aloha.js"
+    <!-- <script src="http://cdn.aloha-editor.org/latest/lib/aloha.js"
       data-aloha-plugins="common/ui, common/format, common/highlighteditables">
-    </script>
+    </script> -->
 
     <script src="{{ url_for('static', filename='js/diary.js') }}"></script>
   </body>

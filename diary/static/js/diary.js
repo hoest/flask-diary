@@ -1,16 +1,16 @@
-var Aloha = window.Aloha || (window.Aloha = {});
-Aloha.settings = {
-  locale: 'nl',
-  plugins: {
-    format: {
-      // all elements with no specific configuration get this configuration
-      config: [ 'b', 'i', 'p' , 'removeFormat' ],
-      sidebar: {
-        disabled: false
-      }
-    }
-  }
-};
+// var Aloha = window.Aloha || (window.Aloha = {});
+// Aloha.settings = {
+//   locale: 'nl',
+//   plugins: {
+//     format: {
+//       // all elements with no specific configuration get this configuration
+//       config: [ 'b', 'i', 'p' , 'removeFormat' ],
+//       sidebar: {
+//         disabled: false
+//       }
+//     }
+//   }
+// };
 
 $(function() {
   post_id = getParameterByName('post_id');
@@ -30,12 +30,14 @@ $(function() {
     $(this).attr('title', $(this).text());
   });
 
-  $('#date').datepicker({ dateFormat: 'yy-mm-dd' });
+  if (!Modernizr.inputtypes.date) {
+    $('#date').datepicker({ dateFormat: 'yy-mm-dd' });
+  }
 
-  Aloha.ready(function() {
-    var $ = Aloha.jQuery;
-    $('#body').aloha();
-  });
+  // Aloha.ready(function() {
+  //   var $ = Aloha.jQuery;
+  //   $('#body').aloha();
+  // });
 });
 
 function getParameterByName(name) {
