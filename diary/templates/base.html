@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-    <link rel="stylesheet" href="http://cdn.aloha-editor.org/latest/css/aloha.css" />
+    {# <link rel="stylesheet" href="http://cdn.aloha-editor.org/latest/css/aloha.css" /> #}
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon-128.png') }}" />
@@ -155,11 +155,11 @@
     <!-- Bootstrap -->
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
-    <!-- load the Aloha Editor scripts -->
-    <script src="http://cdn.aloha-editor.org/latest/lib/require.js"></script>
-    <script src="http://cdn.aloha-editor.org/latest/lib/aloha.js"
-            data-aloha-plugins="common/ui, common/format, common/highlighteditables">
-    </script>
+    {# <!-- load the Aloha Editor scripts --> #}
+    {# <script src="http://cdn.aloha-editor.org/latest/lib/require.js"></script> #}
+    {# <script src="http://cdn.aloha-editor.org/latest/lib/aloha.js" #}
+    {#         data-aloha-plugins="common/ui, common/format, common/highlighteditables"> #}
+    {# </script> #}
 
     <!-- Diary Scripts -->
     <script src="{{ url_for('static', filename='js/diary.js') }}"></script>
