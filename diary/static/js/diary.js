@@ -26,7 +26,10 @@ $(function() {
       'halloheadings': {
         formatBlocks: ['p', 'h3']
       },
-      'halloreundo': {}
+      'halloreundo': {},
+      'halloblacklist': {
+        tags: ['div', 'span', 'h1', 'h2', 'a', 'font']
+      }
     },
     toolbar: 'halloToolbarContextual'
   });
