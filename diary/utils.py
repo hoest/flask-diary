@@ -1,9 +1,9 @@
 from diary import app
-from urlparse import urlparse, urljoin
 from flask import request
+from urlparse import urlparse, urljoin
+import html2text
 import re
 import translitcodec
-import os
 
 try:
   from PIL import Image
@@ -32,7 +32,7 @@ def is_safe_url(target):
   ref_url = urlparse(request.host_url)
   test_url = urlparse(urljoin(request.host_url, target))
   return test_url.scheme in ("http", "https") and \
-         ref_url.netloc == test_url.netloc
+      ref_url.netloc == test_url.netloc
 
 
 def get_redirect_target():
@@ -45,7 +45,7 @@ def get_redirect_target():
 
 def allowed_file(filename):
   return '.' in filename and \
-    filename.rsplit('.', 1)[1] in app.config["ALLOWED_EXTENSIONS"]
+      filename.rsplit('.', 1)[1] in app.config["ALLOWED_EXTENSIONS"]
 
 
 def generate_thumb(source, target, box, fit=True):
@@ -86,3 +86,10 @@ def generate_thumb(source, target, box, fit=True):
     img.save(target)
 
     return target
+
+
+def cleanup(input):
+  h = html2text.HTML2Text()
+  h.ignore_links = True
+  return h.handle(input).replace(u'&nbsp_place_holder;', u' ')
+

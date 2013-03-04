@@ -14,6 +14,7 @@ PyYAML==3.10
 SQLAlchemy==0.8.0b2
 WTForms==1.0.3
 Werkzeug==0.8.3
+html2text==3.200.3
 py-bcrypt==0.2
 pysqlite==2.6.3
 translitcodec==0.3
