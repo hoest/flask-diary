@@ -96,6 +96,10 @@ body {
   margin-bottom: 2rem;
 }
 
+.container .post .span6 {
+  position: relative;
+}
+
 .navbar .brand {
   background-image: url('../img/online-dagboek-logo.png');
   background-repeat: no-repeat;
@@ -106,7 +110,7 @@ body {
 .edit-buttons {
   clear: both;
   float: right;
-  position: relative;
+  position: absolute;
   top: -65px;
   right: 0px;
 }
