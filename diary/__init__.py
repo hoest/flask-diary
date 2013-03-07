@@ -37,7 +37,9 @@ lm.login_message = u"U dient in te loggen voor deze site."
 bcrypt = Bcrypt(app)
 
 # Flask Markdown
-markdown = Markdown(app)
+markdown = Markdown(app,
+                    safe_mode=True,
+                    output_format='html5',)
 
 # Flask FlatPages
 pages = FlatPages(app)
