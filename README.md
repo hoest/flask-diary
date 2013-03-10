@@ -15,6 +15,9 @@ TODO-list:
 * Testing
 * PDF version for printing
 * Create a possibility to share a diary with other Flask-Diary users
+* Caching
+* Create posts by e-mail
+* Clean up code >>> break up views/models/forms into directories
 
 Introduction
 ---
