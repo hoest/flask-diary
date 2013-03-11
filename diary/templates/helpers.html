@@ -1,0 +1,22 @@
+{% macro render_field(field) %}
+  <div class="control-group{% if field.errors %} error{% endif %}">
+    {{ field.label(class="control-label") }}
+    <div class="controls">
+      {{ field(class="input-xlarge", placeholder=field.label.text) }}
+      {% if field.errors %}
+        <span class="help-inline">Verplicht</span>
+      {% endif %}
+      {% if field.label.text == 'Tekst' %}
+        <div id="body-editor" class="span6">{{ field.data|markdown }}</div>
+      {% endif %}
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro render_submit(label) %}
+  <div class="control-group">
+    <div class="controls">
+      <input type="submit" class="btn btn-primary" value="{{ label }}" />
+    </div>
+  </div>
+{% endmacro %}

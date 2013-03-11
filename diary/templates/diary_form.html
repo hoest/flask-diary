@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "helpers.html" import render_field, render_submit %}
 
 {% block title %}Dagboek bewerken{% endblock %}
 
@@ -12,16 +13,7 @@
 {% block content %}
   <form class="form-horizontal" method="post" action=".">
     {{ form.csrf_token }}
-    <div class="control-group">
-      {{ form.title.label(class="control-label") }}
-      <div class="controls">
-        {{ form.title(class="input-xlarge span6", placeholder=form.title.label.text) }}
-      </div>
-    </div>
-    <div class="control-group">
-      <div class="controls">
-        <input type="submit" class="btn" value="Opslaan" />
-      </div>
-    </div>
+    {{ render_field(form.title) }}
+    {{ render_submit("Opslaan") }}
   </form>
 {% endblock %}
