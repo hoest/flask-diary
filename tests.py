@@ -6,6 +6,9 @@ from diary import app, db, models, defaults
 
 class TestCase(unittest.TestCase):
   def setUp(self):
+    """
+    setup database
+    """
     app.config["TESTING"] = True
     app.config["CSRF_ENABLED"] = False
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(defaults.BASEDIR, "db/test.db")
@@ -22,13 +25,17 @@ class TestCase(unittest.TestCase):
     db.session.commit()
 
   def tearDown(self):
+    """
+    remove database
+    """
     db.session.remove()
     db.drop_all()
+    os.remove(os.path.join(defaults.BASEDIR, "db/test.db"))
 
   def test_password(self):
     u = models.User.query.get(1)
-    assert u.is_password_correct("321") == False
-    assert u.is_password_correct("123") == True
+    assert u.is_password_correct("321") is False
+    assert u.is_password_correct("123") is True
 
   def test_make_unique_slug(self):
     u = models.User.query.get(1)
@@ -40,6 +47,8 @@ class TestCase(unittest.TestCase):
 
     d1 = models.Diary.query.get(1)
     d2 = models.Diary.query.get(2)
+    assert d1.slug == "mijn-dagboek"
+    assert d2.slug == "mijn-dagboek-1"
     assert d1.title == d2.title and d1.slug != d2.slug
 
   def test_redirect(self):
