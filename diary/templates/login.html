@@ -24,6 +24,12 @@
 
       {{ render_submit("Inloggen") }}
     </form>
+    <div class="facebook_btn">
+      <a href="{{ url_for('login_facebook') }}">
+        <img src="{{ url_for('static', filename='img/login-facebook.jpg') }}" />
+      </a>
+    </div>
+    <p>U kunt ook inloggen met behulp van uw <a href="{{ url_for('login_facebook') }}">Facebook account</a>.</p>
     <p>Wilt u meer weten over deze website, bekijk onze
       <a href="{{ url_for('page', path='about') }}">informatie pagina</a>.</p>
   </div>

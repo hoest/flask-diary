@@ -1,4 +1,4 @@
-from diary import app, models, db, forms, lm, pages, utils
+from diary import app, models, db, forms, lm, pages, utils, facebook
 from flask import g, session, render_template, redirect, url_for, flash, request, send_from_directory
 from flask.ext.login import login_required, logout_user, login_user
 from werkzeug import secure_filename
@@ -223,9 +223,9 @@ def picture_upload(diary_slug, post_slug):
 
       picture_file.save(os.path.join(target_dir, filename))
       utils.generate_thumb(
-        os.path.join(target_dir, filename),
-        os.path.join(target_dir, "thumb_{0}".format(filename)),
-        (app.config["THUMBNAIL_WIDTH"], app.config["THUMBNAIL_HEIGHT"]))
+          os.path.join(target_dir, filename),
+          os.path.join(target_dir, "thumb_{0}".format(filename)),
+          (app.config["THUMBNAIL_WIDTH"], app.config["THUMBNAIL_HEIGHT"]))
       picture.file_url = url_for("uploaded_file", post_id=post.id, filename=filename)
       picture.thumb_url = url_for("uploaded_file", post_id=post.id, filename="thumb_{0}".format(filename))
 
@@ -301,3 +301,75 @@ def login():
 def logout():
   logout_user()
   return redirect(url_for("login"))
+
+
+@app.route("/facebook/login/", methods=["GET"])
+def login_facebook():
+  """
+  Calling into authorize will cause the OpenID auth machinery to kick
+  in.  When all worked out as expected, the remote application will
+  redirect back to the callback URL provided.
+  """
+  return facebook.authorize(callback=url_for("facebook_authorized",
+    next=request.args.get("next") or request.referrer or None, _external=True))
+
+
+@app.route("/facebook/authorized/")
+@facebook.authorized_handler
+def facebook_authorized(resp):
+  """
+  Called after authorization.  After this function finished handling,
+  the OAuth information is removed from the session again.  When this
+  happened, the tokengetter from above is used to retrieve the oauth
+  token and secret.
+
+  Because the remote application could have re-authorized the application
+  it is necessary to update the values in the database.
+
+  If the application redirected back after denying, the response passed
+  to the function will be `None`.  Otherwise a dictionary with the values
+  the application submitted.  Note that Twitter itself does not really
+  redirect back unless the user clicks on the application name.
+  """
+  if resp is None:
+    flash("Toegang geweigerd: %s (%s)" % (request.args["error_reason"], request.args["error_description"]))
+    return redirect(url_for("diary_index"))
+
+  session["oauth_token"] = (resp["access_token"], "")
+  me = facebook.get("/me")
+
+  user = models.User.query.filter(models.User.emailaddress == me.data["email"]).first()
+  if user is None:
+    # create new user
+    user = models.User(me.data["first_name"], me.data["last_name"], me.data["email"])
+    db.session.add(user)
+    oauth = models.OAuth(user.id, resp["access_token"])
+    db.session.add(oauth)
+    db.session.commit()
+
+  else:
+    # use this user and register oauth
+    oauth = models.OAuth.query.filter(models.OAuth.user_id == user.id, models.OAuth.oauth_type == models.OAUTH_FACEBOOK).first()
+    if oauth is None:
+      oauth = models.OAuth(user.id, resp["access_token"])
+    else:
+      oauth.oauth_token = resp["access_token"]
+    db.session.add(oauth)
+    db.session.commit()
+  login_user(user, True)
+  flash("U bent ingelogd")
+
+  return redirect(url_for("diary_index"))
+
+
+@facebook.tokengetter
+def get_oauth_token():
+  """
+  This is used by the API to look for the auth token and secret
+  it should use for API calls.  During the authorization handshake
+  a temporary set of token and secret is used, but afterwards this
+  function has to return the token and secret.  If you don't want
+  to store this in the database, consider putting it into the
+  session instead.
+  """
+  return session.get("oauth_token")

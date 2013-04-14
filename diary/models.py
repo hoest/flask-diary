@@ -24,7 +24,7 @@ class User(db.Model, UserMixin):
   firstname = db.Column(db.String(256), nullable=False)
   lastname = db.Column(db.String(256), nullable=False, index=True)
   emailaddress = db.Column(db.String(1024), nullable=False, index=True, unique=True)
-  password = db.Column(db.String(1024), nullable=False)
+  password = db.Column(db.String(1024), nullable=True)
   role = db.Column(db.SmallInteger, default=ROLE_USER)
   active = db.Column(db.Boolean, default=True)
   created = db.Column(db.DateTime, default=datetime.now)
@@ -33,11 +33,12 @@ class User(db.Model, UserMixin):
   diaries = db.relationship("Diary", secondary=dairy_user_table, lazy="dynamic", backref="users")
   posts = db.relationship("Post", lazy="dynamic")
 
-  def __init__(self, firstname, lastname, emailaddress, password):
+  def __init__(self, firstname, lastname, emailaddress, password=None):
     self.firstname = firstname
     self.lastname = lastname
     self.emailaddress = emailaddress
-    self.password = bcrypt.generate_password_hash(password)
+    if password is not None:
+      self.password = bcrypt.generate_password_hash(password)
 
   def is_password_correct(self, password):
     return bcrypt.check_password_hash(self.password, password)
@@ -50,6 +51,28 @@ class User(db.Model, UserMixin):
 
   def __repr__(self):
     return u"<User %s>" % (self.emailaddress)
+
+
+OAUTH_TWITTER = 1
+OAUTH_FACEBOOK = 2
+OAUTH_GOOGLE = 3
+
+
+class OAuth(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+  oauth_token = db.Column(db.String(1024), nullable=False)
+  oauth_token_secret = db.Column(db.String(1024), nullable=True)
+  oauth_type = db.Column(db.SmallInteger, default=OAUTH_FACEBOOK)
+
+  def __init__(self, user_id, oauth_token, oauth_token_secret=None, oauth_type=OAUTH_FACEBOOK):
+    self.user_id = user_id
+    self.oauth_token = oauth_token
+    self.oauth_token_secret = oauth_token_secret
+    self.oauth_type = oauth_type
+
+  def __repr__(self):
+    return u"<OAuth %s : %s : %s>" % (self.user_id, self.oauth_type, self.oauth_token)
 
 
 class Diary(db.Model):

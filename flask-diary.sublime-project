@@ -1,0 +1,11 @@
+{
+  "folders":
+  [
+    {
+      "name": "online-dagboek.nl",
+      "path": "/Users/jelle/Development/flask-diary",
+      "folder_exclude_patterns": ["db", "uploads"],
+      "file_exclude_patterns": [".gitignore", "*.min.js", "*.sublime-project", "*.sublime-workspace"]
+    }
+  ]
+}

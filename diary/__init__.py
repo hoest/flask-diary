@@ -2,11 +2,12 @@ from diary import defaults
 from flask import Flask
 from flask.ext.login import LoginManager
 from flask_flatpages import FlatPages
+from flask_oauth import OAuth
 from flask_sqlalchemy import SQLAlchemy
 from flaskext.bcrypt import Bcrypt
 from flaskext.markdown import Markdown
-import locale
 from werkzeug import SharedDataMiddleware
+import locale
 
 
 # create application
@@ -39,9 +40,23 @@ bcrypt = Bcrypt(app)
 # Flask Markdown
 markdown = Markdown(app,
                     safe_mode=True,
-                    output_format='html5',)
+                    output_format="html5",)
 
 # Flask FlatPages
 pages = FlatPages(app)
+
+# Flask OAuth
+oauth = OAuth()
+
+# Facebook
+facebook = oauth.remote_app("facebook",
+  base_url="https://graph.facebook.com/",
+  request_token_url=None,
+  access_token_url="/oauth/access_token",
+  authorize_url="https://www.facebook.com/dialog/oauth",
+  consumer_key=app.config["FACEBOOK_APP_ID"],
+  consumer_secret=app.config["FACEBOOK_APP_SECRET"],
+  request_token_params={"scope": "email"}
+)
 
 from diary import views, models

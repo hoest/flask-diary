@@ -92,4 +92,3 @@ def cleanup(input):
   h = html2text.HTML2Text()
   h.ignore_links = True
   return h.handle(input).replace(u'&nbsp_place_holder;', u' ')
-

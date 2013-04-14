@@ -27,6 +27,10 @@ body {
   z-index: -1;
 }
 
+.facebook_btn {
+  float: right;
+}
+
 .welcome {
   display: block;
   float: right;

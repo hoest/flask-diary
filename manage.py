@@ -19,7 +19,6 @@ def drop():
 def create():
   "Creates database tables from sqlalchemy models"
   db.create_all()
-  populate()
 
 
 @manager.command
@@ -27,6 +26,7 @@ def recreate():
   "Recreates database tables (same as issuing 'drop' and then 'create')"
   drop()
   create()
+  populate()
 
 
 @manager.command
