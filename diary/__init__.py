@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 # configuration
 app.config.from_object(defaults)
-app.config.from_envvar("SETTINGS", silent=True)
+app.config.from_envvar("FLASK_DIARY_SETTINGS", silent=True)
 
 # Uploads
 app.add_url_rule("/uploads/<post_id>/<filename>", "uploaded_file", build_only=True)
