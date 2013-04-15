@@ -6,10 +6,10 @@ TODO-list:
 * ~~Create application framework~~
 * ~~Autorisation~~
 * ~~Authentication~~
-* Add a WYSIWYG editor for post.body
+* ~~Add a WYSIWYG editor for post.body~~
 * User-management
-* Serverside form-cleaning (post.body needs to be checked)
-* Make it possible to login with Facebook, Twitter or Google-account
+* ~~Serverside form-cleaning (post.body needs to be checked)~~
+* Make it possible to login with ~~Facebook~~, Twitter or Google-account
 * ~~Styling~~
 * ~~Logo design~~
 * Testing
