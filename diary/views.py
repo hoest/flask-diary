@@ -283,7 +283,9 @@ def login():
     # login and validate the user...
     email = request.form["emailaddress"].lower()
     user = models.User.query.filter(models.User.emailaddress == email).first()
-    if user is not None and user.is_password_correct(request.form["password"]):
+    if user.password is None:
+      flash("Je hebt je aangemeld via sociale media, gebruik die gegevens om in te loggen.")
+    elif user is not None and user.is_password_correct(request.form["password"]):
       remember_me = False
       if "remember_me" in request.form:
         remember_me = request.form["remember_me"]
