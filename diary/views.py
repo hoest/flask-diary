@@ -108,7 +108,7 @@ def diary_delete(diary_id):
     db.session.commit()
     flash("Dagboek verwijderd")
   else:
-    flash("U heeft hier geen rechten toe.")
+    flash("Je heeft hier geen rechten toe.")
   return redirect(url_for("diary_index"))
 
 
@@ -195,7 +195,7 @@ def post_delete(diary_slug, post_id):
     db.session.commit()
     flash("Bericht verwijderd")
   else:
-    flash("U heeft hier geen rechten toe.")
+    flash("Je heeft hier geen rechten toe.")
   return redirect(url_for("post_index", diary_slug=diary_slug))
 
 
@@ -272,7 +272,7 @@ def picture_delete(diary_slug, post_slug, picture_id):
     db.session.commit()
     flash("Afbeelding verwijderd")
   else:
-    flash("U heeft hier geen rechten toe.")
+    flash("Je heeft hier geen rechten toe.")
   return redirect(url_for("post_index", diary_slug=diary_slug, post_id=post.id))
 
 
@@ -288,7 +288,7 @@ def login():
       if "remember_me" in request.form:
         remember_me = request.form["remember_me"]
       login_user(user, remember_me)
-      flash("U bent ingelogd")
+      flash("Je bent ingelogd")
       return form.redirect("diary_index")
     else:
       flash("Inloggegevens niet correct ingevoerd")
@@ -357,7 +357,7 @@ def facebook_authorized(resp):
     db.session.add(oauth)
     db.session.commit()
   login_user(user, True)
-  flash("U bent ingelogd")
+  flash("Je bent ingelogd")
 
   return redirect(url_for("diary_index"))
 

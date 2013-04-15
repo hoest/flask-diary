@@ -72,7 +72,7 @@ class TestCase(unittest.TestCase):
     rv = self.logout()
     assert "Inloggen" in rv.data
     rv = self.login("jelle@hoest.nl", "123")
-    assert "U bent ingelogd" in rv.data
+    assert "Je bent ingelogd" in rv.data
 
 
 if __name__ == "__main__":
