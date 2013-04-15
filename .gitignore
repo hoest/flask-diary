@@ -43,3 +43,4 @@ db/
 # uploads folder
 uploads/
 
+*.sublime-workspace
