@@ -11,6 +11,7 @@ except:
   import Image
 
 _punct_re = re.compile(r"[\t !\"#$%&'()*\-/<=>?@\[\\\]^_`{|},.]+")
+internal = ["pages", "favicon.ico", "create", "delete", "login", "logout", "facebook", "diary"]
 
 
 def slugify(text, delim=u"-"):
@@ -21,8 +22,12 @@ def slugify(text, delim=u"-"):
   for word in _punct_re.split(text.lower()):
     word = word.encode("translit/long")
     if word:
-        result.append(word)
-  return unicode(delim.join(result))[:64]
+      result.append(word)
+  my_slug = unicode(delim.join(result))[:64]
+  if any(my_slug in s for s in internal):
+    return "diary-%s" % my_slug
+  else:
+    return my_slug
 
 
 def is_safe_url(target):
@@ -31,8 +36,7 @@ def is_safe_url(target):
   """
   ref_url = urlparse(request.host_url)
   test_url = urlparse(urljoin(request.host_url, target))
-  return test_url.scheme in ("http", "https") and \
-      ref_url.netloc == test_url.netloc
+  return test_url.scheme in ("http", "https") and ref_url.netloc == test_url.netloc
 
 
 def get_redirect_target():
@@ -44,8 +48,7 @@ def get_redirect_target():
 
 
 def allowed_file(filename):
-  return '.' in filename and \
-      filename.rsplit('.', 1)[1] in app.config["ALLOWED_EXTENSIONS"]
+  return '.' in filename and filename.rsplit('.', 1)[1] in app.config["ALLOWED_EXTENSIONS"]
 
 
 def generate_thumb(source, target, box, fit=True):
