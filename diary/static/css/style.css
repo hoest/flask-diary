@@ -186,6 +186,7 @@ ul.polaroids .paperclip {
 
 ul.polaroids a.image-link:after {
   content: attr(title);
+  display: block;
 }
 
 ul.polaroids a.image-link {
