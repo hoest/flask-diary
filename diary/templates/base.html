@@ -63,7 +63,7 @@
                   </a>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown1">
                     {% for diary in g.diaries %}
-                      <li>
+                      <li role="menuitem">
                         <a href="{{ url_for('post_index', diary_slug=diary.slug) }}">{{ diary.title }}</a>
                       </li>
                     {% endfor %}
@@ -79,13 +79,13 @@
                       <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown2">
-                      <li>
+                      <li role="menuitem">
                         <a href="{{ url_for('diary_edit', diary_slug=diary.slug) }}">Dagboek bewerken</a>
                       </li>
-                      <li>
+                      <li role="menuitem">
                         <a href="{{ url_for('diary_delete', diary_id=diary.id) }}">Dagboek verwijderen</a>
                       </li>
-                      <li>
+                      <li role="menuitem">
                         <a href="{{ url_for('post_create', diary_slug=diary.slug) }}">Bericht toevoegen</a>
                       </li>
                     </ul>
