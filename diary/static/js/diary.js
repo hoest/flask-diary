@@ -39,6 +39,8 @@ $(function() {
   });
 
   $('#body').hide();
+
+  $(".fancybox").fancybox();
 });
 
 var getParameterByName = function(name) {

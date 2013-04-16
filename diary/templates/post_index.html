@@ -35,7 +35,7 @@
         {% for picture in post.pictures %}
         <li class="picture">
         <span class="paperclip"></span>
-        <a class="image-link" href="{{ picture.file_url }}" title="{{ picture.title }}">
+        <a class="image-link fancybox" href="{{ picture.file_url }}" title="{{ picture.title }}">
           <img src="{{ picture.thumb_url }}" id="pic_{{ picture.id }}" alt="{{ picture.title }}" />
         </a>
         <a class="delete-image" href="{{ url_for('picture_delete', diary_slug=diary.slug, post_slug=post.slug, picture_id=picture.id) }}">Verwijder deze afbeelding</a>

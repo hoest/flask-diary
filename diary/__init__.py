@@ -21,11 +21,13 @@ app.config.from_envvar("FLASK_DIARY_SETTINGS", silent=True)
 # Assets
 assets = Environment(app)
 js = Bundle("js/bootstrap.min.js", "js/rangy-core-1.2.3.js", "js/reMarked.js",
-            "js/showdown.js", "js/hallo.min.js", "js/diary.js",
+            "js/showdown.js", "js/hallo.min.js",
+            "fancybox/jquery.fancybox.pack.js", "js/diary.js",
             filters="jsmin", output="gen/packed.js")
 assets.register("js_all", js)
 
 css = Bundle("css/bootstrap.min.css", "css/font-awesome.min.css", "css/style.css",
+             "fancybox/jquery.fancybox.css",
              filters="cssmin", output="gen/packed.css")
 assets.register("css_all", css)
 
