@@ -1,5 +1,6 @@
 from diary import defaults
 from flask import Flask
+from flask.ext.assets import Environment, Bundle
 from flask.ext.login import LoginManager
 from flask_flatpages import FlatPages
 from flask_oauth import OAuth
@@ -17,11 +18,20 @@ app = Flask(__name__)
 app.config.from_object(defaults)
 app.config.from_envvar("FLASK_DIARY_SETTINGS", silent=True)
 
+# Assets
+assets = Environment(app)
+js = Bundle("js/bootstrap.min.js", "js/rangy-core-1.2.3.js", "js/reMarked.js",
+            "js/showdown.js", "js/hallo.min.js", "js/diary.js",
+            filters="jsmin", output="gen/packed.js")
+assets.register("js_all", js)
+
+css = Bundle("css/bootstrap.min.css", "css/font-awesome.min.css", "css/style.css",
+             filters="cssmin", output="gen/packed.css")
+assets.register("css_all", css)
+
 # Uploads
 app.add_url_rule("/uploads/<post_id>/<filename>", "uploaded_file", build_only=True)
-app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
-  "/uploads": app.config["UPLOAD_FOLDER"]
-})
+app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {"/uploads": app.config["UPLOAD_FOLDER"]})
 
 locale.setlocale(locale.LC_ALL, app.config["LOCALE"])
 

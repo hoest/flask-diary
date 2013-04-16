@@ -17,9 +17,10 @@
     <!-- Styling -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Indie+Flower|Nunito|Permanent+Marker" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+
+    {% assets "css_all" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %}
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon-128.png') }}" />
@@ -159,16 +160,8 @@
     <script src="//code.jquery.com/jquery-1.9.1.js"></script>
     <script src="//code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 
-    <!-- Bootstrap -->
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
-    <!-- Hallo Editor -->
-    <script src="{{ url_for('static', filename='js/rangy-core-1.2.3.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/reMarked.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/showdown.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/hallo.min.js') }}"></script>
-
-    <!-- Diary Scripts -->
-    <script src="{{ url_for('static', filename='js/diary.js') }}"></script>
+    {% assets "js_all" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
   </body>
 </html>
