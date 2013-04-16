@@ -54,9 +54,9 @@
           </button>
           <a class="brand" href="{{ url_for('diary_index') }}">Online Dagboek</a>
           <div class="nav-collapse collapse">
-            <ul class="nav">
+            <ul class="nav" role="menubar">
               {% if g.user %}
-                <li class="dropdown">
+                <li class="dropdown" role="menuitem">
                   <a href="#" id="dropdown1" class="dropdown-toggle" data-toggle="dropdown">
                     Dagboeken
                     <b class="caret"></b>
@@ -67,13 +67,13 @@
                         <a href="{{ url_for('post_index', diary_slug=diary.slug) }}">{{ diary.title }}</a>
                       </li>
                     {% endfor %}
-                    <li>
+                    <li role="menuitem">
                       <a href="{{ url_for('diary_create') }}">Dagboek toevoegen...</a>
                     </li>
                   </ul>
                 </li>
                 {% if diary %}
-                  <li class="dropdown">
+                  <li class="dropdown" role="menuitem">
                     <a href="#" id="dropdown2" class="dropdown-toggle" data-toggle="dropdown">
                       {{ diary.title }}
                       <b class="caret"></b>
@@ -91,15 +91,17 @@
                     </ul>
                   </li>
                 {% endif %}
-                <li><a href="{{ url_for('logout') }}">Uitloggen</a></li>
+                <li role="menuitem">
+                  <a href="{{ url_for('logout') }}">Uitloggen</a>
+                </li>
               {% else %}
-                <li>
+                <li role="menuitem">
                   <a href="/">Home</a>
                 </li>
-                <li>
+                <li role="menuitem">
                   <a href="{{ url_for('page', path='about') }}">Meer informatie</a>
                 </li>
-                <li>
+                <li role="menuitem">
                   <a href="{{ url_for('page', path='terms-conditions') }}">Algemene voorwaarden</a>
                 </li>
               {% endif %}
