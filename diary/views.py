@@ -1,6 +1,7 @@
-from diary import app, models, db, forms, lm, pages, utils, facebook
+from diary import app, models, db, forms, lm, pages, utils, facebook, mail
 from flask import g, session, render_template, redirect, url_for, flash, request, send_from_directory
 from flask.ext.login import login_required, logout_user, login_user
+from flask_mail import Message
 from werkzeug import secure_filename
 import os
 import shutil
@@ -348,12 +349,14 @@ def facebook_authorized(resp):
     oauth = models.OAuth(user.id, resp["access_token"])
     db.session.add(oauth)
     db.session.commit()
+    send_welcome_mail(user)
 
   else:
     # use this user and register oauth
     oauth = models.OAuth.query.filter(models.OAuth.user_id == user.id, models.OAuth.oauth_type == models.OAUTH_FACEBOOK).first()
     if oauth is None:
       oauth = models.OAuth(user.id, resp["access_token"])
+      send_welcome_mail(user)
     else:
       oauth.oauth_token = resp["access_token"]
     db.session.add(oauth)
@@ -362,6 +365,31 @@ def facebook_authorized(resp):
   flash("Je bent ingelogd")
 
   return redirect(url_for("diary_index"))
+
+
+def send_welcome_mail(user):
+  """
+  Method to send a welcome-mail to a new Facebook-user
+  """
+  body = """
+  Beste %s,
+
+  Welkom bij Online-dagboek (http://www.online-daboek.nl/). Vanaf heden kun
+  je gebruik maken van de diensten van Online-dagboek, met behulp van je
+  Facebook-account kun je inloggen op de site en je berichten schrijven
+  in je dagboek.
+
+  Veel plezier!
+
+  M.v.g.,
+  Jelle de Jong
+  """ % (user.firstname)
+
+  msg = Message(subject="Welkom bij Online-dagboek.nl",
+                body=body,
+                recipients=[user.emailaddress],
+                bcc=[app.config["MAIL_DEFAULT_BCC"]])
+  mail.send(msg)
 
 
 @facebook.tokengetter

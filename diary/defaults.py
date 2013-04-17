@@ -18,3 +18,9 @@ THUMBNAIL_HEIGHT = 220
 
 FACEBOOK_APP_ID = ""
 FACEBOOK_APP_SECRET = ""
+
+MAIL_SERVER = "smtp.webfaction.com"
+MAIL_USERNAME = None
+MAIL_PASSWORD = None
+MAIL_DEFAULT_SENDER = "noreply@online-daboek.nl"
+MAIL_DEFAULT_BCC = "jelle@hoest.nl"

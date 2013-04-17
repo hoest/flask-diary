@@ -3,6 +3,7 @@ from flask import Flask
 from flask.ext.assets import Environment, Bundle
 from flask.ext.login import LoginManager
 from flask_flatpages import FlatPages
+from flask_mail import Mail
 from flask_oauth import OAuth
 from flask_sqlalchemy import SQLAlchemy
 from flaskext.bcrypt import Bcrypt
@@ -30,6 +31,9 @@ css = Bundle("css/bootstrap.min.css", "css/font-awesome.min.css", "css/style.css
              "fancybox/jquery.fancybox.css",
              filters="cssmin", output="gen/packed.css")
 assets.register("css_all", css)
+
+# Mail
+mail = Mail(app)
 
 # Uploads
 app.add_url_rule("/uploads/<post_id>/<filename>", "uploaded_file", build_only=True)
