@@ -112,7 +112,7 @@
           </div>
 
           {% if g.user %}
-            <span class="welcome">Welkom {{ g.user.firstname }} (<a title="Uitloggen" href="{{ url_for('logout') }}">Iemand anders?</a>)</span>
+            <span class="welcome">Welkom{{ " " }}{{ g.user.firstname }}{{ " " }}(<a title="Uitloggen" href="{{ url_for('logout') }}">Iemand anders?</a>)</span>
           {% endif %}
         </div>
       </div>
