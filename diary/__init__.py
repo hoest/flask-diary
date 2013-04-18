@@ -22,11 +22,11 @@ app.config.from_envvar("FLASK_DIARY_SETTINGS", silent=True)
 # Assets
 assets = Environment(app)
 js = Bundle("js/bootstrap.min.js", "fancybox/jquery.fancybox.pack.js", "js/diary.js",
-            filters="jsmin", output="gen/packed.js")
+            filters="jsmin", output="gen/packed.%(version)s.js")
 assets.register("js_all", js)
 
 css = Bundle("css/bootstrap.min.css", "css/style.css", "fancybox/jquery.fancybox.css",
-             filters="cssmin", output="gen/packed.css")
+             filters="cssmin", output="gen/packed.%(version)s.css")
 assets.register("css_all", css)
 
 # Mail
