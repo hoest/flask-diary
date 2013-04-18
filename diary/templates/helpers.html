@@ -6,9 +6,6 @@
       {% if field.errors %}
         <span class="help-inline">Verplicht</span>
       {% endif %}
-      {% if field.label.text == 'Tekst' %}
-        <div id="body-editor" class="span6">{{ field.data|markdown }}</div>
-      {% endif %}
     </div>
   </div>
 {% endmacro %}

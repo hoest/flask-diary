@@ -20,26 +20,6 @@ $(function() {
     $('#date').datepicker({ dateFormat: 'yy-mm-dd' });
   }
 
-  $('#body-editor').hallo({
-    plugins: {
-      'halloformat': {},
-      'halloheadings': {
-        formatBlocks: ['p', 'h3']
-      },
-      'halloreundo': {},
-      'halloblacklist': {
-        tags: ['div', 'span', 'pre', 'cite', 'blockquote', 'code', 'h1', 'h2', 'a', 'font']
-      }
-    },
-    toolbar: 'halloToolbarContextual'
-  });
-
-  $('#body-editor').bind('hallomodified', function(event, data) {
-    $('#body').val(data.content);
-  });
-
-  $('#body').hide();
-
   $(".fancybox").fancybox();
 });
 

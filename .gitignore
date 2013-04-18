@@ -44,3 +44,9 @@ db/
 uploads/
 
 *.sublime-workspace
+
+diary/static/.webassets-cache/
+diary/static/gen/
+gunicorn.conf.py
+logs/
+venv/

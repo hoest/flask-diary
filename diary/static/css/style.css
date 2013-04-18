@@ -145,6 +145,10 @@ body {
   background-image: url('../img/icoon-trash.png');
 }
 
+textarea#body {
+  height: 320px;
+}
+
 #body-editor {
   margin: 1rem 0;
   padding: 10px;

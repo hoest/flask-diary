@@ -142,7 +142,7 @@ def post_create(diary_slug):
 
     form.populate_obj(post)
 
-    post.body = utils.cleanup(post.body)
+    # post.body = utils.cleanup(post.body)
 
     db.session.add(post)
     db.session.commit()
@@ -169,7 +169,7 @@ def post_edit(diary_slug, post_slug):
   if form.validate_on_submit():
     form.populate_obj(post)
     post.create_slug(diary.id)
-    post.body = utils.cleanup(post.body)
+    # post.body = utils.cleanup(post.body)
 
     db.session.add(post)
     db.session.commit()
