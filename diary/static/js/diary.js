@@ -16,6 +16,10 @@ $(function() {
     $(this).attr('title', $(this).text());
   });
 
+  $('a[class^=delete-], [class^=delete-] a').bind('click', function() {
+    return confirm("Weet je het zeker?");
+  });
+
   if (!Modernizr.inputtypes.date) {
     $('#date').datepicker({ dateFormat: 'yy-mm-dd' });
   }
