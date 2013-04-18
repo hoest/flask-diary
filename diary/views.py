@@ -1,3 +1,4 @@
+from datetime import datetime
 from diary import app, models, db, forms, lm, pages, utils, facebook, mail
 from flask import g, session, render_template, redirect, url_for, flash, request, send_from_directory
 from flask.ext.login import login_required, logout_user, login_user
@@ -139,10 +140,7 @@ def post_create(diary_slug):
     post = models.Post(diary.id, request.form["title"])
     post.user_id = g.user.id
     post.diary_id = diary.id
-
     form.populate_obj(post)
-
-    # post.body = utils.cleanup(post.body)
 
     db.session.add(post)
     db.session.commit()
@@ -169,7 +167,7 @@ def post_edit(diary_slug, post_slug):
   if form.validate_on_submit():
     form.populate_obj(post)
     post.create_slug(diary.id)
-    # post.body = utils.cleanup(post.body)
+    post.modified = datetime.now()
 
     db.session.add(post)
     db.session.commit()
