@@ -48,7 +48,7 @@ def get_redirect_target():
 
 
 def allowed_file(filename):
-  return '.' in filename and filename.rsplit('.', 1)[1] in app.config["ALLOWED_EXTENSIONS"]
+  return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config["ALLOWED_EXTENSIONS"]
 
 
 def generate_thumb(source, target, box, fit=True):
