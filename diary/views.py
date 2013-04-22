@@ -333,8 +333,8 @@ def facebook_authorized(resp):
   redirect back unless the user clicks on the application name.
   """
   if resp is None:
-    flash("Toegang geweigerd, probeer opnieuw in te loggen")
-    return redirect(url_for("login_facebook"))
+    flash("Probeer opnieuw in te loggen")
+    return redirect(url_for("diary_index"))
 
   session["oauth_token"] = (resp["access_token"], "")
   me = facebook.get("/me")
