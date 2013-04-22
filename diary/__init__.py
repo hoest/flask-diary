@@ -14,7 +14,7 @@ import locale
 
 # create application
 app = Flask(__name__)
-app.jinja_env.add_extension("jinja2htmlcompress.HTMLCompress")
+# app.jinja_env.add_extension("jinja2htmlcompress.HTMLCompress")
 
 # configuration
 app.config.from_object(defaults)
