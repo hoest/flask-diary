@@ -29,9 +29,8 @@ $(function() {
     nextSelector: "div.pager a.old", // selector for the NEXT link (to page 2)
     itemSelector: "#content div.post", // selector for all items you"ll retrieve
     loading: {
-      finishedMsg: null,
-      msg: null,
-      msgText: null
+      finishedMsg: "",
+      msgText: "<p>Meer berichten laden...</p>"
     },
     prefill: true,
     extraScrollPx: 250,
