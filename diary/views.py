@@ -115,14 +115,15 @@ def diary_delete(diary_id):
 
 
 @app.route("/<path:diary_slug>/")
+@app.route("/<path:diary_slug>/<int:page>/")
 @login_required
-def post_index(diary_slug):
+def post_index(diary_slug, page=1):
   """
   Shows all available posts in the current diary, includes a form to add a new
   post to this diary.
   """
   diary = g.user.get_diary(diary_slug).first_or_404()
-  posts = diary.sorted_posts()
+  posts = diary.sorted_posts().paginate(page, 5, False)
 
   return render_template("post_index.html", diary=diary, posts=posts)
 

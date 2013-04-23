@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-  {% for post in posts %}
+  {% for post in posts.items %}
   <div class="post" id="post_{{ post.id }}">
     <div class="span6">
       <div class="date">{{ post.date.strftime('%e %B %Y') }}</div>
@@ -50,4 +50,15 @@
     <p>Het dagboek is aangemaakt, je kunt nu je <a href="{{ url_for('post_create', diary_slug=diary.slug) }}">berichten gaan toevoegen</a>.<p>
   </div>
   {% endfor %}
+
+  <div class="span8 pager">
+  {% if posts.has_prev %}
+    <a class="new" href="{{ url_for('post_index', diary_slug=diary.slug, page=posts.prev_num) }}">&laquo; Nieuwere berichten</a>
+  {% else %}
+    &laquo; Nieuwere berichten{% endif %} | {% if posts.has_next %}
+    <a class="old" href="{{ url_for('post_index', diary_slug=diary.slug, page=posts.next_num) }}">Oudere berichten &raquo;</a>
+  {% else %}
+    Oudere berichten &raquo;
+  {% endif %}
+  </div>
 {% endblock %}

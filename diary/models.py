@@ -134,6 +134,7 @@ class Post(db.Model):
   pictures = db.relationship("Picture", lazy="dynamic")
 
   def __init__(self, diary_id, title):
+    self.diary_id = diary_id
     self.title = title
     self.create_slug(diary_id)
 
@@ -148,7 +149,7 @@ class Post(db.Model):
     self.slug = new
 
   def __repr__(self):
-    return u"<Post %s>" % (self.title)
+    return u"<Post: %s> %s" % (self.id, self.title)
 
 
 class Picture(db.Model):

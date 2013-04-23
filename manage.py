@@ -37,6 +37,8 @@ def populate():
   db.session.add(user1)
   db.session.add(user2)
 
+  db.session.commit()
+
   diary = models.Diary("Mijn dagboek")
   diary.owner_id = user1.id
   diary.users.append(user1)
@@ -45,5 +47,12 @@ def populate():
 
   db.session.commit()
 
+  for i in range(1, 25, 1):
+    post = models.Post(diary.id, "Bericht %s" % i)
+    post.user_id = user1.id
+    post.body = "Bericht %s" % i
+    db.session.add(post)
+
+  db.session.commit()
 
 manager.run()
