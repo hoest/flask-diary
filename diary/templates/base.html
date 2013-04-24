@@ -98,15 +98,28 @@
                 <li role="menuitem">
                   <a href="/">Home</a>
                 </li>
-                <li role="menuitem">
-                  <a href="{{ url_for('page', path='about') }}">Meer informatie</a>
-                </li>
-                <li role="menuitem">
-                  <a href="{{ url_for('page', path='terms-conditions') }}">Algemene voorwaarden</a>
-                </li>
               {% endif %}
-              <li role="menuitem">
-                <a href="{{ url_for('page', path='news') }}">Nieuws</a>
+              <li class="dropdown" role="menuitem">
+                <a href="#" id="dropdown3" class="dropdown-toggle" data-toggle="dropdown">
+                  Over
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown3">
+                  <li role="menuitem">
+                    <a href="{{ url_for('page', path='news') }}">Nieuws</a>
+                  </li>
+                  <li role="menuitem">
+                    <a href="{{ url_for('page', path='about') }}">Meer informatie</a>
+                  </li>
+                  <li role="menuitem">
+                    <a href="{{ url_for('page', path='terms-conditions') }}">Algemene voorwaarden</a>
+                  </li>
+                  {% if g.user %}
+                  <li role="menuitem">
+                    <a href="mailto:jelle@hoest.nl">Vragen?</a>
+                  </li>
+                  {% endif %}
+                </ul>
               </li>
             </ul>
           </div>
