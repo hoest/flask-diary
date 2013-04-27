@@ -1,6 +1,6 @@
 from datetime import datetime
 from diary import app, models, db, forms, lm, pages, utils, facebook, mail
-from flask import g, session, render_template, redirect, url_for, flash, request, send_from_directory
+from flask import g, abort, session, render_template, redirect, url_for, flash, request, send_from_directory
 from flask.ext.login import login_required, logout_user, login_user
 from flask_mail import Message
 from werkzeug import secure_filename
@@ -38,6 +38,20 @@ def page(path):
 def favicon():
   return send_from_directory(os.path.join(app.root_path, "static"),
                              "favicon.ico", mimetype="image/vnd.microsoft.icon")
+
+
+@app.route("/admin/")
+@login_required
+def management():
+  """
+  Admin screen
+  """
+  if g.user.role == 1:
+    diaries = models.Diary.query.all()
+    users = models.User.query.all()
+    return render_template("management.html", diaries=diaries, users=users)
+  else:
+    abort(403)
 
 
 @app.route("/")

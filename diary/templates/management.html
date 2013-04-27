@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Beheer{% endblock %}
+
+{% block header %}Beheer{% endblock %}
+
+{% block content %}
+  <div class="span8">
+    <h2>Dagboeken overzicht</h2>
+    <p>Totaal zijn er {{ diaries|count }} dagboeken.</p>
+    <table>
+      <tr>
+        <th>Dagboek titel</th>
+        <th>Aantal berichten</th>
+        <th>Eigenaar</th>
+      </tr>
+      {% for diary in diaries %}
+        <tr>
+          <td>{{ diary.title }}</td>
+          <td>{{ diary.posts.count() }}</td>
+          <td>
+            <ul>
+              {% for user in diary.users %}
+                <li><a href="mailto:{{ user.emailaddress }}">{{ user.emailaddress }}</a></li>
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+    <h2>Gebruikers overzicht</h2>
+    <p>Totaal zijn er {{ users|count }} gebruikers.</p>
+    <table>
+      <tr>
+        <th>Naam</th>
+        <th>Emailadres</th>
+        <th>Aantal berichten</th>
+      </tr>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.firstname }} {{ user.lastname }}</td>
+          <td><a href="mailto:{{ user.emailaddress }}">{{ user.emailaddress }}</a></td>
+          <td>{{ user.posts.count() }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+{% endblock %}
