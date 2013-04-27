@@ -55,6 +55,7 @@ bcrypt = Bcrypt(app)
 
 # Flask Markdown
 markdown = Markdown(app,
+                    extensions=["nl2br", "sane_lists"],
                     safe_mode=True,
                     output_format="html5",)
 
