@@ -44,7 +44,10 @@ class User(db.Model, UserMixin):
     return bcrypt.check_password_hash(self.password, password)
 
   def get_diary(self, slug):
-    return self.diaries.filter(Diary.slug == slug)
+    if self.role == ROLE_USER:
+      return self.diaries.filter(Diary.slug == slug)
+    else:
+      return Diary.query.filter(Diary.slug == slug)
 
   def sorted_diaries(self):
     return self.diaries.order_by(Diary.title)

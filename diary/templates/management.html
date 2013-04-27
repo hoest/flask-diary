@@ -16,7 +16,7 @@
       </tr>
       {% for diary in diaries %}
         <tr>
-          <td>{{ diary.title }}</td>
+          <td><a href="{{ url_for('post_index', diary_slug=diary.slug) }}">{{ diary.title }}</a></td>
           <td>{{ diary.posts.count() }}</td>
           <td>
             <ul>
