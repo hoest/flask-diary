@@ -8,10 +8,10 @@
   <div class="span8">
     <h2>Dagboeken overzicht</h2>
     <p>Totaal zijn er {{ diaries|count }} dagboeken.</p>
-    <table>
+    <table class="management-table">
       <tr>
-        <th>Dagboek titel</th>
-        <th>Aantal berichten</th>
+        <th>Titel</th>
+        <th>Aantal</th>
         <th>Eigenaar</th>
       </tr>
       {% for diary in diaries %}
@@ -21,7 +21,7 @@
           <td>
             <ul>
               {% for user in diary.users %}
-                <li><a href="mailto:{{ user.emailaddress }}">{{ user.emailaddress }}</a></li>
+                <li><a href="mailto:{{ user.emailaddress }}">{{ user.lastname }}, {{ user.firstname }}</a></li>
               {% endfor %}
             </ul>
           </td>
@@ -30,17 +30,15 @@
     </table>
     <h2>Gebruikers overzicht</h2>
     <p>Totaal zijn er {{ users|count }} gebruikers.</p>
-    <table>
+    <table class="management-table">
       <tr>
         <th>Naam</th>
-        <th>Emailadres</th>
         <th>Aantal</th>
         <th>Laatste bericht</th>
       </tr>
       {% for user in users %}
         <tr>
-          <td>{{ user.lastname }}, {{ user.firstname }}</td>
-          <td><a href="mailto:{{ user.emailaddress }}">{{ user.emailaddress }}</a></td>
+          <td><a href="mailto:{{ user.emailaddress }}">{{ user.lastname }}, {{ user.firstname }}</a></td>
           <td>{{ user.posts.count() }}</td>
           <td>
             {% if user.last_post() %}
