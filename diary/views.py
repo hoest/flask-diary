@@ -47,8 +47,8 @@ def management():
   Admin screen
   """
   if g.user.role == 1:
-    diaries = models.Diary.query.all()
-    users = models.User.query.all()
+    diaries = models.Diary.query.order_by(models.Diary.title).all()
+    users = models.User.query.order_by(models.User.lastname).all()
     return render_template("management.html", diaries=diaries, users=users)
   else:
     abort(403)

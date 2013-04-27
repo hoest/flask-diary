@@ -49,6 +49,9 @@ class User(db.Model, UserMixin):
   def sorted_diaries(self):
     return self.diaries.order_by(Diary.title)
 
+  def last_post(self):
+    return self.posts.order_by(Post.created.desc()).first()
+
   def __repr__(self):
     return u"<User %s>" % (self.emailaddress)
 

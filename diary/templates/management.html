@@ -34,13 +34,21 @@
       <tr>
         <th>Naam</th>
         <th>Emailadres</th>
-        <th>Aantal berichten</th>
+        <th>Aantal</th>
+        <th>Laatste bericht</th>
       </tr>
       {% for user in users %}
         <tr>
-          <td>{{ user.firstname }} {{ user.lastname }}</td>
+          <td>{{ user.lastname }}, {{ user.firstname }}</td>
           <td><a href="mailto:{{ user.emailaddress }}">{{ user.emailaddress }}</a></td>
           <td>{{ user.posts.count() }}</td>
+          <td>
+            {% if user.last_post() %}
+              {{ user.last_post().created.strftime('%e %B %Y om %H:%m') }}
+            {% else %}
+              Geen
+            {% endif %}
+          </td>
         </tr>
       {% endfor %}
     </table>
