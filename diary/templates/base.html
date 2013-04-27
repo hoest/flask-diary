@@ -70,6 +70,11 @@
                     <li role="menuitem">
                       <a href="{{ url_for('diary_create') }}">Dagboek toevoegen...</a>
                     </li>
+                    {% if g.user.role == 1 %}
+                    <li role="menuitem">
+                      <a href="{{ url_for('management') }}">Beheer</a>
+                    </li>
+                    {% endif %}
                   </ul>
                 </li>
                 {% if diary %}
@@ -90,11 +95,6 @@
                       </li>
                     </ul>
                   </li>
-                {% endif %}
-                {% if g.user.role == 1 %}
-                <li role="menuitem">
-                  <a href="{{ url_for('management') }}">Beheer</a>
-                </li>
                 {% endif %}
                 <li role="menuitem">
                   <a href="{{ url_for('logout') }}">Uitloggen</a>
