@@ -6,6 +6,8 @@
 
 {% block content %}
   <div class="span8">
+    <h2>Laatste bericht</h2>
+    <p>Het laatste bericht is geplaatst op {{ last.created.strftime('%e %B %Y om %H:%m') }}.</p>
     <h2>Dagboeken overzicht</h2>
     <p>Totaal zijn er {{ diaries|count }} dagboeken.</p>
     <table class="management-table">

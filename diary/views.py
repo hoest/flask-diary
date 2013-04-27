@@ -49,7 +49,8 @@ def management():
   if g.user.role == 1:
     diaries = models.Diary.query.order_by(models.Diary.title).all()
     users = models.User.query.order_by(models.User.lastname).all()
-    return render_template("management.html", diaries=diaries, users=users)
+    last = models.Post.query.order_by(models.Post.created.desc()).first()
+    return render_template("management.html", diaries=diaries, users=users, last=last)
   else:
     abort(403)
 
