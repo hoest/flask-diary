@@ -251,6 +251,10 @@ table.management-table th {
   font-weight: bold;
 }
 
+table.management-table tr:nth-child(odd) {
+  background-color:#eee;
+}
+
 table.management-table th,
 table.management-table td {
   font-size: 75%;
