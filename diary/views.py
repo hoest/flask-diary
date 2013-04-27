@@ -183,7 +183,7 @@ def post_edit(diary_slug, post_slug):
   if form.validate_on_submit():
     form.populate_obj(post)
     post.create_slug(diary.id)
-    post.modified = datetime.now()
+    post.modified = datetime.utcnow()
 
     db.session.add(post)
     db.session.commit()

@@ -27,7 +27,7 @@ class User(db.Model, UserMixin):
   password = db.Column(db.String(1024), nullable=True)
   role = db.Column(db.SmallInteger, default=ROLE_USER)
   active = db.Column(db.Boolean, default=True)
-  created = db.Column(db.DateTime, default=datetime.now)
+  created = db.Column(db.DateTime, default=datetime.utcnow)
 
   # relations
   diaries = db.relationship("Diary", secondary=dairy_user_table, lazy="dynamic", backref="users")
@@ -91,7 +91,7 @@ class Diary(db.Model):
   owner_id = db.Column(db.Integer, db.ForeignKey("user.id"))
   title = db.Column(db.String(1024), nullable=False, index=True)
   slug = db.Column(db.String(256), nullable=False, unique=True)
-  created = db.Column(db.DateTime, default=datetime.now)
+  created = db.Column(db.DateTime, default=datetime.utcnow)
 
   # relations
   posts = db.relationship("Post", lazy="dynamic")
@@ -131,10 +131,10 @@ class Post(db.Model):
   diary_id = db.Column(db.Integer, db.ForeignKey("diary.id"))
   title = db.Column(db.String(1024), nullable=False, index=True)
   body = db.Column(db.Text, nullable=False)
-  date = db.Column(db.Date, default=datetime.now)
+  date = db.Column(db.Date, default=datetime.utcnow)
   slug = db.Column(db.String(256), nullable=False)
-  created = db.Column(db.DateTime, default=datetime.now)
-  modified = db.Column(db.DateTime, default=datetime.now)
+  created = db.Column(db.DateTime, default=datetime.utcnow)
+  modified = db.Column(db.DateTime, default=datetime.utcnow)
 
   # relations
   pictures = db.relationship("Picture", lazy="dynamic")
