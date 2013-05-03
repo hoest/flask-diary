@@ -87,10 +87,12 @@ body {
 
 .container h2 {
   clear: both;
+  font-size: 1.5rem;
 }
 
 .container .date {
   float: right;
+  font-size: 1rem;
 }
 
 .container .post {
