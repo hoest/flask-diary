@@ -388,7 +388,7 @@ def send_welcome_mail(user):
   body = """
   Beste %s,
 
-  Welkom bij Online-dagboek (http://www.online-daboek.nl/). Vanaf heden kun
+  Welkom bij Online-dagboek (http://www.online-dagboek.nl/). Vanaf heden kun
   je gebruik maken van de diensten van Online-dagboek, met behulp van je
   Facebook-account kun je inloggen op de site en je berichten schrijven
   in je dagboek.
