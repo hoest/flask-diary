@@ -117,7 +117,10 @@ class Diary(db.Model):
     return self.posts.order_by(Post.date.desc())
 
   def last_post(self):
-    return self.posts.order_by(Post.created.desc()).first()
+    if self.posts:
+      return self.posts.order_by(Post.created.desc()).first()
+    else:
+      return None
 
   def __repr__(self):
     return u"<Diary %s>" % (self.title)
