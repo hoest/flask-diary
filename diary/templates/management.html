@@ -28,7 +28,11 @@
               {% endfor %}
             </ul>
           </td>
-          <td>{{ diary.last_post().created.strftime('%e %B %Y om %H:%m') }}</td>
+          <td>
+            {% if diary.last_post() %}
+              {{ diary.last_post().created.strftime('%e %B %Y om %H:%m') }}
+            {% endif %}
+          </td>
         </tr>
       {% endfor %}
     </table>
