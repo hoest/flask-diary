@@ -328,7 +328,8 @@ def login_facebook():
   redirect back to the callback URL provided.
   """
   return facebook.authorize(callback=url_for("facebook_authorized",
-    next=request.args.get("next") or request.referrer or None, _external=True))
+                                             next=request.args.get("next") or request.referrer or None,
+                                             _external=True))
 
 
 @app.route("/facebook/authorized/")

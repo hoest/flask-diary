@@ -15,6 +15,7 @@
         <th>Titel</th>
         <th>Aantal</th>
         <th>Eigenaar</th>
+        <th>Laatste bijdrage</th>
       </tr>
       {% for diary in diaries %}
         <tr>
@@ -27,6 +28,7 @@
               {% endfor %}
             </ul>
           </td>
+          <td>{{ diary.last_post().created.strftime('%e %B %Y om %H:%m') }}</td>
         </tr>
       {% endfor %}
     </table>
