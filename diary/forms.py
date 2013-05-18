@@ -19,7 +19,7 @@ class PostForm(Form):
   """
   title = TextField("Titel", validators=[Required()])
   body = TextAreaField("Tekst", default="Voer hier je tekst in...", validators=[Required()])
-  date = DateField("Datum", default=datetime.datetime.utcnow(), validators=[Required()])
+  date = DateField("Datum", validators=[Required()])
 
 
 class PictureForm(Form):
