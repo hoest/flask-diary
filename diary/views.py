@@ -75,7 +75,10 @@ def diary_create():
   """
   form = forms.DiaryForm()
 
-  if form.validate_on_submit():
+  if len(g.user.sorted_diaries()) > 1:
+    # only 1 diary per user
+    flash("Je mag niet meer dagboeken aanmaken")
+  elif form.validate_on_submit():
     diary = models.Diary(request.form["title"])
     diary.owner_id = g.user.id
     diary.users.append(g.user)
@@ -84,8 +87,6 @@ def diary_create():
     db.session.commit()
     flash("Dagboek toegevoegd")
     return redirect(url_for("post_index", diary_slug=diary.slug))
-  # else:
-  #   flash("Dagboek is niet correct ingevoerd")
 
   return render_template("diary_form.html", form=form)
 
