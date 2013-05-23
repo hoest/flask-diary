@@ -75,7 +75,7 @@ def diary_create():
   """
   form = forms.DiaryForm()
 
-  if len(g.user.sorted_diaries()) > 1:
+  if g.user.sorted_diaries().count() > 1:
     # only 1 diary per user
     flash("Je mag niet meer dagboeken aanmaken")
   elif form.validate_on_submit():
