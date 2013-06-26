@@ -13,23 +13,17 @@
   <div class="span8">
     <p>Welkom bij <a href="/">Online Dagboek</a>, hier kun je je eigen dagboek
     bijhouden, alleen voor jezelf en niet voor de rest van de wereld!</p>
+    <p>Momenteel is het nog niet mogelijk om je te registreren op deze
+      site, maar je kunt je met je <a href="{{ url_for('login_facebook') }}">Facebook
+      account</a> aanmelden om gebruik te maken van deze site. Klik hiervoor
+      op onderstaande knop.</p>
+    <p>Veel plezier!</p>
     <p>&#160;</p>
-    <form class="form-horizontal" method="POST" action=".">
-      {{ form.csrf_token }}
-      {{ form.next }}
-
-      {{ render_field(form.emailaddress) }}
-      {{ render_field(form.password) }}
-      {{ render_field(form.remember_me) }}
-
-      {{ render_submit("Inloggen") }}
-    </form>
     <div class="facebook_btn">
       <a href="{{ url_for('login_facebook') }}">
         <img src="{{ url_for('static', filename='img/login-facebook.jpg') }}" alt="Aanmelden met Facebook" />
       </a>
     </div>
-    <p>Je kunt ook inloggen met behulp van een <a href="{{ url_for('login_facebook') }}">Facebook account</a>.</p>
     <p>Wanneer je gebruik maakt van deze site, ga je automatisch akkoord met
       onze <a href="{{ url_for('page', path='terms-conditions') }}">algemene
       voorwaarden</a>.</p>
