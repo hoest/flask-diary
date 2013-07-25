@@ -12,7 +12,7 @@
   {% for post in posts.items %}
   <div class="post" id="post_{{ post.id }}">
     <div class="span6">
-      <div class="date">{{ post.date.strftime('%e %B %Y') }}</div>
+      <div class="date">{{ "%02d-%02d-%04d" % (post.date.day, post.date.month, post.date.year) }}</div>
       <h2>
         {{ post.title }}
       </h2>
