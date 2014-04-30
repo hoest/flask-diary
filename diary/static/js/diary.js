@@ -6,7 +6,7 @@ $(function() {
     }, 500);
   }
 
-  $(".alert-block").delay(1000).slideUp();
+  $(".alert-block.alert-info").delay(5000).slideUp();
 
   $(".edit-buttons li a").each(function() {
     $(this).attr("title", $(this).text());
