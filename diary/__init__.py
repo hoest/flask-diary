@@ -1,7 +1,7 @@
 from diary import defaults
-from flask import Flask
+from flask import Flask, g
 from flask.ext.assets import Environment, Bundle
-from flask.ext.login import LoginManager
+from flask.ext.login import LoginManager, current_user
 from flask_flatpages import FlatPages
 from flask_mail import Mail
 from flask_oauth import OAuth
@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flaskext.bcrypt import Bcrypt
 from flaskext.markdown import Markdown
 from werkzeug import SharedDataMiddleware
+import flask.ext.restless
 import locale
 
 
@@ -77,3 +78,37 @@ facebook = oauth.remote_app("facebook",
 )
 
 from diary import views, models
+
+
+def auth_func(*args, **kw):
+  if not current_user.is_authenticated():
+    raise flask.ext.restless.ProcessingException(description="Not authenticated!", code=401)
+
+
+def get_many_preprocessor(search_params=None, **kw):
+  if g.user is not None and current_user.is_authenticated():
+    """Accepts a single argument, `search_params`, which is a dictionary
+    containing the search parameters for the request.
+
+    """
+    filt = dict(name="users", op="any", val=dict(name="id", op="eq", val=g.user.id))
+    # Check if there are any filters there already.
+    if "filters" not in search_params:
+      search_params["filters"] = []
+    # *Append* your filter to the list of filters.
+    search_params["filters"].append(filt)
+
+
+# Create the Flask-Restless API manager.
+manager = flask.ext.restless.APIManager(app,
+                                        preprocessors=dict(GET_SINGLE=[auth_func],
+                                                           GET_MANY=[auth_func, get_many_preprocessor],
+                                                           PUT_SINGLE=[auth_func],
+                                                           PUT_MANY=[auth_func],
+                                                           POST=[auth_func],
+                                                           DELETE=[auth_func]),
+                                        flask_sqlalchemy_db=db)
+
+# Create API endpoints, which will be available at /api/<tablename> by
+# default. Allowed HTTP methods can be specified as well.
+manager.create_api(models.Diary, exclude_columns=["posts", "users"], methods=["GET", "POST", "DELETE", "PUT_SINGLE"])

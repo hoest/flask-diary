@@ -44,6 +44,10 @@ def populate():
   diary.users.append(user1)
   diary.users.append(user2)
   db.session.add(diary)
+  diary = models.Diary("Suus d'r dagboek")
+  diary.owner_id = user2.id
+  diary.users.append(user2)
+  db.session.add(diary)
 
   db.session.commit()
 
