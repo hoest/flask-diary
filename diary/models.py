@@ -43,6 +43,9 @@ class User(db.Model, UserMixin):
   def is_password_correct(self, password):
     return bcrypt.check_password_hash(self.password, password)
 
+  def has_access(self, diary_id):
+    return len(self.diaries.filter(Diary.id == diary_id).all()) is 1
+
   def get_diary(self, slug):
     if self.role == ROLE_USER:
       return self.diaries.filter(Diary.slug == slug)
@@ -56,7 +59,7 @@ class User(db.Model, UserMixin):
     return self.posts.order_by(Post.created.desc()).first()
 
   def __repr__(self):
-    return u"<User %s>" % (self.emailaddress)
+    return u"<User %d : %s>" % (self.id, self.emailaddress)
 
 
 OAUTH_TWITTER = 1
@@ -120,7 +123,7 @@ class Diary(db.Model):
     return self.posts.order_by(Post.created.desc()).first()
 
   def __repr__(self):
-    return u"<Diary %s>" % (self.title)
+    return u"<Diary %d : %s>" % (self.id, self.title)
 
 
 class Post(db.Model):
