@@ -122,10 +122,22 @@ def get_many_preprocessor(search_params=None, **kw):
     search_params["filters"].append(filt)
 
 
+def sort_by_date_preprocessor(search_params=None, **kw):
+  if g.user is not None and current_user.is_authenticated():
+    order = dict(field="date", direction="desc")
+
+    # Check if there are any order_by there already.
+    if "order_by" not in search_params:
+      search_params["order_by"] = []
+
+    # *Append* your filter to the list of order_by.
+    search_params["order_by"].append(order)
+
+
 # Create the Flask-Restless API manager.
 manager = flask.ext.restless.APIManager(app,
                                         preprocessors=dict(GET_SINGLE=[auth_func, get_single_preprocessor],
-                                                           GET_MANY=[auth_func, get_many_preprocessor],
+                                                           GET_MANY=[auth_func, get_many_preprocessor, sort_by_date_preprocessor],
                                                            PUT_SINGLE=[auth_func],
                                                            POST=[auth_func],
                                                            DELETE=[auth_func]),
