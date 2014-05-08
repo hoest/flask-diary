@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Online Dagboek</title>
+</head>
+<body>
+  {% if user %}
+  ingelogd: {{user}}
+  {% else %}
+    <a href="{{ url_for('login_facebook') }}?next={{ '%s' % request.args.get('next') if request.args.get('next') }}">
+      <img src="{{ url_for('static', filename='img/login-facebook.jpg') }}" alt="Aanmelden met Facebook" />
+    </a>
+  {% endif %}
+</body>
+</html>
