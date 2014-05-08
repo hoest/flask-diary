@@ -137,7 +137,7 @@ def sort_by_date_preprocessor(search_params=None, **kw):
 # Create the Flask-Restless API manager.
 manager = flask.ext.restless.APIManager(app,
                                         preprocessors=dict(GET_SINGLE=[auth_func, get_single_preprocessor],
-                                                           GET_MANY=[auth_func, get_many_preprocessor, sort_by_date_preprocessor],
+                                                           GET_MANY=[auth_func, get_many_preprocessor],
                                                            PUT_SINGLE=[auth_func],
                                                            POST=[auth_func],
                                                            DELETE=[auth_func]),
