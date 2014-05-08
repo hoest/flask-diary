@@ -43,14 +43,14 @@ def catch_all(path=None):
 
 @app.route("/login/", methods=["GET", "POST"])
 def login():
-  return render_template("login.html")
+  return render_template("index.html", user=None)
 
 
 @app.route("/logout/")
 @login_required
 def logout():
   logout_user()
-  return redirect(url_for("login"))
+  return redirect(url_for("catch_all"))
 
 
 @app.route("/facebook/login/", methods=["GET"])
@@ -104,10 +104,8 @@ def facebook_authorized(resp):
   else:
     # use this user and register oauth
     oauth = models.OAuth.query.filter(models.OAuth.user_id == user.id, models.OAuth.oauth_type == models.OAUTH_FACEBOOK).first()
-
     if oauth is None:
       oauth = models.OAuth(user.id, resp["access_token"])
-      send_welcome_mail(user)
     else:
       oauth.oauth_token = resp["access_token"]
 
