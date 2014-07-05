@@ -8,6 +8,16 @@ import os
 import shutil
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return redirect("/pages/404")
+
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return redirect("/pages/500")
+
+
 @app.before_request
 def check_user_status():
   """
@@ -61,8 +71,8 @@ def diary_index():
   """
   Shows all available diaries, includes a form to create a new one.
   """
-  if g.diaries and g.diaries.first():
-    return redirect(url_for("post_index", diary_slug=g.diaries.first().slug))
+  # if g.diaries and g.diaries.first():
+  #   return redirect(url_for("post_index", diary_slug=g.diaries.first().slug))
 
   return render_template("diary_index.html", diaries=g.diaries)
 
