@@ -74,6 +74,8 @@ def diary_index():
   """
   if g.diaries and g.diaries.first():
     return redirect(url_for("post_index", diary_slug=g.diaries.first().slug))
+  elif g.user is None:
+    return redirect(url_for("login"))
 
   return render_template("diary_index.html", diaries=g.diaries)
 
