@@ -15,7 +15,7 @@ def page_not_found(e):
 
 @app.errorhandler(500)
 def page_error(e):
-    return redirect("/pages/500")
+    return flask.jsonify({"error":e})
 
 
 @app.before_request
