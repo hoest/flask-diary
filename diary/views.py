@@ -323,6 +323,8 @@ def login():
       return form.redirect("diary_index")
     else:
       flash("Inloggegevens niet correct ingevoerd")
+  elif g.user is not None:
+    return form.redirect("diary_index")
 
   return render_template("login.html", form=form)
 
