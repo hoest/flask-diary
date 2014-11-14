@@ -24,6 +24,7 @@ def check_user_status():
   Check global user_id
   """
   g.user = None
+  g.diaries = None
   if "user_id" in session:
     g.user = models.User.query.get(session["user_id"])
     g.diaries = g.user.sorted_diaries()
