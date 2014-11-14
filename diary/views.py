@@ -14,7 +14,7 @@ def page_not_found(e):
 
 
 @app.errorhandler(500)
-def page_not_found(e):
+def page_error(e):
     return redirect("/pages/500")
 
 
