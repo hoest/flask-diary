@@ -1,4 +1,4 @@
-from diary import defaults
+import config
 from flask import Flask
 from flask.ext.assets import Environment, Bundle
 from flask.ext.login import LoginManager
@@ -6,7 +6,7 @@ from flask_flatpages import FlatPages
 from flask_mail import Mail
 from flask_oauth import OAuth
 from flask_sqlalchemy import SQLAlchemy
-from flaskext.bcrypt import Bcrypt
+from flask.ext.bcrypt import Bcrypt
 from flaskext.markdown import Markdown
 from werkzeug import SharedDataMiddleware
 import locale
@@ -17,8 +17,7 @@ app = Flask(__name__)
 # app.jinja_env.add_extension("jinja2htmlcompress.HTMLCompress")
 
 # configuration
-app.config.from_object(defaults)
-app.config.from_envvar("FLASK_DIARY_SETTINGS", silent=True)
+app.config.from_object(config)
 
 # Assets
 assets = Environment(app)
