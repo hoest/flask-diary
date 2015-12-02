@@ -30,6 +30,9 @@
     <!-- Modernizr -->
     <script src="{{ url_for('static', filename='js/modernizr.min.js') }}"></script>
 
+    <!-- JS-Cookie -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/js-cookie/2.0.4/js.cookie.min.js"></script>
+
     <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
     <script type="text/javascript">
       window.cookieconsent_options = {
@@ -42,6 +45,8 @@
     </script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
     <!-- End Cookie Consent plugin -->
+
+    <script>window.cookieconsent_dismissed = Cookies.get('cookieconsent_dismissed') == 'yes';</script>
 
     <script>
       var _gaq = _gaq || [];
@@ -154,7 +159,11 @@
       <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
       <!-- Online Dagboek Header -->
       <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-2308542917989831" data-ad-slot="1292776902"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <script>
+        if(window.cookieconsent_dismissed) {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      </script>
     </div>
 
     <div class="outer-wrapper">
@@ -206,7 +215,11 @@
       <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
       <!-- Online Daboek Footer -->
       <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-2308542917989831" data-ad-slot="8816043701"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <script>
+        if(window.cookieconsent_dismissed) {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      </script>
     </div>
 
     <!-- jQuery -->
