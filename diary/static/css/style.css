@@ -6,6 +6,7 @@ body {
 
 .outer-wrapper {
   position: relative;
+  clear:both;
 }
 
 .spacer {
@@ -27,7 +28,8 @@ body {
   height:153px;
   padding: 15px 25px 25px 65px;
   position: absolute;
-  top: 55px;
+  top: 0;
+  left: 0;
   z-index: -1;
 }
 
