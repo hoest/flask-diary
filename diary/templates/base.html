@@ -136,51 +136,46 @@
       </div>
     </div>
 
-    <div class="spacer"></div>
+    <div class="outer-wrapper">
+      <div class="spacer"></div>
 
-    <div class="dagboek-top-ads">
-      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <!-- Online dagboek (Zijbalk) -->
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2308542917989831" data-ad-slot="9374446908" data-ad-format="auto"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+      <div class="header">
+        <h1>{% block header %}{% endblock %}</h1>
+      </div>
 
-    <div class="header">
-      <h1>{% block header %}{% endblock %}</h1>
-    </div>
-
-    <div class="dagboek-top"></div>
-    <div class="dagboek">
-      <div class="container">
-        <div id="content" class="row">
-          {% with messages = get_flashed_messages() %}
-            {% if messages %}
-              <div class="span8">
-                <div class="alert alert-block alert-info">
-                  <button type="button" class="close" data-dismiss="alert">&times;</button>
-                  {% for message in messages %}
-                    <p>{{ message }}</p>
-                  {% endfor %}
+      <div class="dagboek-top"></div>
+      <div class="dagboek">
+        <div class="container">
+          <div id="content" class="row">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="span8">
+                  <div class="alert alert-block alert-info">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {% for message in messages %}
+                      <p>{{ message }}</p>
+                    {% endfor %}
+                  </div>
                 </div>
-              </div>
-            {% endif %}
-          {% endwith %}
-          {% block content %}
-          {% endblock %}
+              {% endif %}
+            {% endwith %}
+            {% block content %}
+            {% endblock %}
+          </div>
         </div>
       </div>
-    </div>
-    <div id="footer" class="dagboek-bottom">
-      <div class="container">
-        <div class="row">
-          <div class="span8">
-            <p>
-              &#169; 2013 - <a href="/">Online Dagboek</a>
-              -
-              <a href="{{ url_for('page', path='about') }}">Meer informatie</a>
-              -
-              <a href="{{ url_for('page', path='terms-conditions') }}">Algemene voorwaarden</a>
-            </p>
+      <div id="footer" class="dagboek-bottom">
+        <div class="container">
+          <div class="row">
+            <div class="span8">
+              <p>
+                &#169; 2013 - <a href="/">Online Dagboek</a>
+                -
+                <a href="{{ url_for('page', path='about') }}">Meer informatie</a>
+                -
+                <a href="{{ url_for('page', path='terms-conditions') }}">Algemene voorwaarden</a>
+              </p>
+            </div>
           </div>
         </div>
       </div>

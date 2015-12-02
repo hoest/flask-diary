@@ -4,6 +4,10 @@ body {
   background-image: url(../img/kleed.png);
 }
 
+.outer-wrapper {
+  position: relative;
+}
+
 .spacer {
   height: 75px;
 }
