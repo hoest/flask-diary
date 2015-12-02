@@ -47,6 +47,10 @@ body {
   clear: both;
 }
 
+.dagboek-top-ads {
+  text-align: center;
+}
+
 .dagboek-bottom {
   background-image: url('../img/dagboek-bottom.png');
   background-repeat: no-repeat;
