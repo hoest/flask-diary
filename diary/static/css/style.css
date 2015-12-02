@@ -4,6 +4,10 @@ body {
   background-image: url(../img/kleed.png);
 }
 
+.dagboek-top-ads {
+  margin-left: 1rem 0 1rem 125px;
+}
+
 .outer-wrapper {
   position: relative;
   clear:both;
@@ -51,10 +55,6 @@ body {
   height: 143px;
   width: 946px;
   clear: both;
-}
-
-.dagboek-top-ads {
-  text-align: center;
 }
 
 .dagboek-bottom {
