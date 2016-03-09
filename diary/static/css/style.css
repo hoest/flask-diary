@@ -8,6 +8,12 @@ body {
   margin: 1rem 0 1rem 150px;
 }
 
+.dagboek-rightads {
+  position: fixed;
+  top: 3em;
+  left: 1024px;
+}
+
 .outer-wrapper {
   position: relative;
   clear:both;
