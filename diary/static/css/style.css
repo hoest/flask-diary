@@ -11,7 +11,7 @@ body {
 .dagboek-rightads {
   position: fixed;
   top: 3em;
-  left: 1024px;
+  left: 946px;
 }
 
 .outer-wrapper {
@@ -57,7 +57,6 @@ body {
 
 .dagboek-top {
   background-image: url('../img/dagboek-top.png');
-  margin-left: 50px;
   height: 143px;
   width: 946px;
   clear: both;
@@ -66,7 +65,6 @@ body {
 .dagboek-bottom {
   background-image: url('../img/dagboek-bottom.png');
   background-repeat: no-repeat;
-  margin-left: 50px;
   height: 143px;
   width: 946px;
   clear: both;
@@ -81,7 +79,6 @@ body {
   line-height: 1.7rem;
   width: 946px;
   clear: both;
-  margin-left: 50px;
 }
 
 .container {
