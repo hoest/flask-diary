@@ -28,6 +28,7 @@ class User(db.Model, UserMixin):
   role = db.Column(db.SmallInteger, default=ROLE_USER)
   active = db.Column(db.Boolean, default=True)
   created = db.Column(db.DateTime, default=datetime.utcnow)
+  last_login = db.Column(db.DateTime, default=datetime.utcnow)
 
   # relations
   diaries = db.relationship("Diary", secondary=dairy_user_table, lazy="dynamic", backref="users")

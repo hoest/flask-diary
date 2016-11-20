@@ -35,7 +35,12 @@ def load_user(user_id):
   """
   LoginManager method
   """
-  return models.User.query.get(user_id)
+  user = models.User.query.get(user_id)
+  user.last_login = datetime.utcnow()
+  db.session.add(user)
+  db.session.commit()
+
+  return user
 
 
 @app.route("/pages/<path:path>/")
