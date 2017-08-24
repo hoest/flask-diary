@@ -80,9 +80,11 @@ if not app.debug:
   import logging
   import os.path
   from logging.handlers import RotatingFileHandler
+  formatter = logging.Formatter("[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
   log_path = os.path.join(app.config["BASEDIR"], "logs")
-  file_handler = RotatingFileHandler(log_path + "/onlinedagboek.log")
+  file_handler = RotatingFileHandler(log_path + "/onlinedagboek.log", maxBytes=10000, backupCount=10)
   file_handler.setLevel(logging.WARNING)
+  file_handler.setFormatter(formatter)
   app.logger.addHandler(file_handler)
 
 
