@@ -15,6 +15,7 @@ def page_not_found(e):
 
 @app.errorhandler(500)
 def page_error(e):
+    app.logger.error("Server error: %", (e))
     return redirect("/pages/500?error=%s" % e)
 
 
@@ -375,7 +376,9 @@ def facebook_authorized(resp):
     return redirect(url_for("diary_index"))
 
   session["oauth_token"] = (resp["access_token"], "")
-  me = facebook.get("/me")
+  me = facebook.get("/me?fields=id,name,email")
+
+  app.logger.info(str(me.__dict__));
 
   user = models.User.query.filter(models.User.emailaddress == me.data["email"]).first()
   if user is None:

@@ -75,4 +75,15 @@ facebook = oauth.remote_app("facebook",
   request_token_params={"scope": "email"}
 )
 
+# Logging
+if not app.debug:
+  import logging
+  import os.path
+  from logging.handlers import RotatingFileHandler
+  log_path = os.path.join(app.config["BASEDIR"], "logs")
+  file_handler = RotatingFileHandler(log_path + "/onlinedagboek.log")
+  file_handler.setLevel(logging.WARNING)
+  app.logger.addHandler(file_handler)
+
+
 from diary import views, models
