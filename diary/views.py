@@ -379,7 +379,7 @@ def facebook_authorized(resp):
   session["oauth_token"] = (resp["access_token"], "")
   me = facebook.get("/me?fields=id,name,email")
 
-  app.logger.info("Facebook: %s", me.__dict__)
+  app.logger.warn("Facebook: %s", me.__dict__)
 
   user = models.User.query.filter(models.User.emailaddress == me.data["email"]).first()
   if user is None:
